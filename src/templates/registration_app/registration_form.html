@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Formularz zgłoszeniowy
+{% endblock %}
+
+{% block content %}
+    <div class="main-container">
+        <div class="header">
+            <p id="nazwa-szkoly">Zespół Szkół "Elektryk" w Słupsku im. Noblistów Polskich</p>
+            <div>
+                <img class="bg-image" src="../../static/pictures/logo.png">
+            </div>
+            <div class="header-content">
+
+                <p>Zgłoszenie udziału <br /> w Ogólnopolskim Konkursie <br /> <i>"Mistrz Wiedzy Hotelarskiej"</i></p>
+
+            </div>
+
+            <div style="clear: both;"></div>
+
+        </div>
+
+        <form enctype="multipart/form-data" action="verification.php" method="post">
+
+            <div class="form-container">
+
+                <div class="form-group" style="width: 70%; float: left;">
+                    <label for="formGroupExampleInput">Nazwa szkoły</label><span style="color: red;"> *</span>
+                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Nazwa szkoły..." name="form-name" required>
+                </div>
+
+                <div class="form-group" style="width: 20%; margin-left: 10%; float: left;">
+                    <label for="formGroupExampleInput">Skrót nazwy szkoły</label>
+                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Skrót..." name="form-short">
+                </div>
+
+                <div style="clear: both;" ></div>
+
+                    <p></p>
+
+
+
+                <div class="form-group">
+                    <label for="formGroupExampleInput">Adres</label><span style="color: red;"> *</span>
+                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Adres..." name="form-address" required>
+                </div>
+
+
+                    <p></p>
+
+                    <br />
+
+
+                <div class="form-group input-float-left">
+                    <label for="formGroupExampleInput">Telefon</label><span style="color: red;"> *</span>
+                    <input type="number" class="form-control" id="formGroupExampleInput" placeholder="Numer telefonu..." name="form-phone" required>
+                </div>
+
+                <div class="form-group input-float-left left-margin">
+                    <label for="formGroupExampleInput">Fax</label>
+                    <input type="number" class="form-control" id="formGroupExampleInput" placeholder="Numer fax..." name="form-fax">
+                </div>
+
+                <div style="clear: both;" ></div>
+
+                    <p></p>
+
+
+                <div class="form-group">
+                    <label for="formGroupExampleInput">Email</label><span style="color: red;"> *</span>
+                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Adres email..." name="form-email" required>
+                </div>
+
+
+                    <p></p>
+
+                    <br />
+
+
+                <div class="form-group">
+                    <label for="formGroupExampleInput">Osoba do kontaktu/opiekun</label><span style="color: red;"> *</span>
+                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Dane osoby do kontaktu/opiekuna..." name="form-person" required>
+                </div>
+
+                <br />
+
+                <div class="form-group" >
+                    <label for="exampleFormControlFile1">Wybierz dodatkowe pliki osoby do kontaktu/opiekuna.</label>
+                    <input type="file" class="form-control-file" id="exampleFormControlFile3" name="form-person-file" required>
+                </div>
+
+                <p></p>
+                <br />
+
+                <hr />
+                <br />
+                <p><h5>Pierwszy uczestnik</h5></p>
+                <br />
+
+
+                <div class="form-group" style="width: 40%; margin-left: 5%; float: left;">
+                    <label for="formGroupExampleInput">Imię</label><span style="color: red;"> *</span>
+                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Imię pierwszego uczestnika..." name="form-first-first" required>
+                </div>
+
+
+                <div class="form-group" style="width: 40%; margin-left: 10%; float: left;">
+                    <label for="formGroupExampleInput">Nazwisko</label><span style="color: red;"> *</span>
+                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Nazwisko pierwszego uczestnika..." name="form-first-last" required>
+                </div>
+
+                <div style="clear: both;" ></div>
+
+                <br />
+
+                <div class="form-group">
+                    <label for="exampleFormControlFile1">Wybierz plik ze zgodą na przetwarzanie danych osobowych.</label>
+                    <input type="file" class="form-control-file" id="exampleFormControlFile1" name="form-first-file" required>
+                </div>
+
+                <br />
+
+                <hr />
+                <br />
+                <p><h5>Drugi uczestnik</h5></p>
+                <br />
+
+
+                <div class="form-group" style="width: 40%; margin-left: 5%; float: left;">
+                    <label for="formGroupExampleInput">Imię</label><span style="color: red;"> *</span>
+                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Imię drugiego uczestnika..." name="form-second-first" required>
+                </div>
+
+
+                <div class="form-group" style="width: 40%; margin-left: 10%; float: left;">
+                    <label for="formGroupExampleInput">Nazwisko</label><span style="color: red;"> *</span>
+                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Nazwisko drugiego uczestnika..." name="form-second-last" required>
+                </div>
+                <div style="clear: both;" ></div>
+                <br>
+                <div class="form-group" >
+                    <label for="exampleFormControlFile1">Wybierz plik ze zgodą na przetwarzanie danych osobowych.</label>
+                    <input type="file" class="form-control-file" id="exampleFormControlFile2" name="form-second-file" required>
+                </div>
+                    <p></p>
+                    <br>
+                    <p></p>
+                <div class="form-check">
+                    <input class="form-check-input regulamin" type="checkbox" value="yes" id="invalidCheck" name="form-checkbox" required><span style="color: red;">*</span>
+                    <label class="form-check-label" for="invalidCheck" required>
+                        Oświadczam, że zapoznałem(am) się z <a href="Regulamin.pdf" target="_blank">Regulaminem</a> konkursu i akceptuję jego warunki.
+                    </label>
+                </div>
+                <br>
+                <p style="color: grey;"><span style="color: red;">*</span> - pole wymagane</p>
+				<br>
+				<div class="g-recaptcha" data-sitekey="6LfhgsMUAAAAANmWrhsZY_2XM0GVdoSi006Z9jib" required></div>
+				<br>
+                <button type="submit" class="btn btn-primary btn-send">Wyślij</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
