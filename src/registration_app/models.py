@@ -20,7 +20,7 @@ class Guardian(models.Model):
     surname = models.CharField(max_length=255, blank=True)
     mobile_phone = PhoneNumberField(region="PL", unique=True, blank=True)
     email = models.EmailField(unique=True, blank=True)
-    clause = models.FileField(upload_to="")
+    clause = models.FileField(upload_to="clauses/")
 
     def __str__(self):
         return f"{self.name} - {self.surname}"
@@ -29,7 +29,7 @@ class Guardian(models.Model):
 class TeamMember(models.Model):
     name = models.CharField(max_length=255, blank=True)
     surname = models.CharField(max_length=255, blank=True)
-    clause = models.FileField(upload_to="")
+    clause = models.FileField(upload_to="clauses/")
 
     def __str__(self):
         return f"{self.name} - {self.surname}"

@@ -1,9 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import redirect
 
 
 class CheckUserMixin:
     def dispatch(self, request, *args, **kwargs):
         if self.request.user.is_anonymous:
-            return render(request, "registration_app/registration_form.html")
+            return redirect(to="registration/form")
         else:
-            return render(request, "admin_app/home.html")
+            return redirect(to="administrator/home")
