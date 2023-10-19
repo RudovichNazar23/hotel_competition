@@ -1,14 +1,67 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
     Formularz zgłoszeniowy
 {% endblock %}
 
+{% block head_links %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font.css' %}">
+{% endblock %}
+
 {% block content %}
-<!--    {{ high_school_form.as_p }}<br>-->
-<!--    <br>-->
-<!--    {{ guardian_form.as_p }}<br>-->
-<!--    <br>-->
-<!--    {{ team_form.as_p }}<br>-->
-<!--    <br>-->
+    <div class="bg-image p-3"
+         style="background-image: url('https://pix8.agoda.net/hotelImages/124/1246280/1246280_16061017110043391702.jpg?ca=6&ce=1&s=1024x768'); height: 100%;">
+            <div class="container d-flex flex-row mt-3 p-3 border rounded bg-light">
+                <img src="../../static/pictures/logo.png" height="200" width="200" class="border">
+                <div class="container text-center">
+
+                </div>
+            </div>
+            <div class="container border bg-light rounded p-3 mt-3">
+                <form id="registration_form">
+                    <div class="container d-flex flex-column">
+                        <div class="text-center"><strong>High school form</strong></div>
+                        <hr>
+                        {% for field in high_school_form %}
+                            <div class="form-group">
+                                <label>{{ field.label_tag }}</label>
+                                {{ field }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <hr>
+                    <div class="container d-flex flex-column d-none">
+                        <div class="text-center"><strong>Guardian form</strong></div>
+                        {% for field in guardian_form %}
+                            <div class="form-group">
+                                <label>{{ field.label_tag }}</label>
+                                {{ field }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <hr>
+                    <div class="container d-flex flex-column d-none">
+                        <div class="text-center"><strong>Team member1 form</strong></div>
+                        {% for field in team_form %}
+                            <div class="form-group">
+                                <label>{{ field.label_tag }}</label>
+                                {{ field }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <hr>
+                </form>
+            </div>
+            <div class="container bg-light p-3 mt-3 rounded d-none" id="add_container">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                      <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                    </svg>
+                <button class="btn btn-info" id="team_member" type="submit">
+                    Add person to the team
+                </button>
+            </div>
+    </div>
+
+    <script src="{% static 'js/add_team_member.js' %}"></script>
 {% endblock %}
