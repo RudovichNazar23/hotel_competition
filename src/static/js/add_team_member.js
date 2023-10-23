@@ -58,5 +58,5 @@ class CreateTeamMemberHandler{
 };
 
 let button = document.getElementById("team_member");
-button.addEventListener("click", new CreateInputHandler())
+button.addEventListener("click", new CreateTeamMemberHandler())
 
