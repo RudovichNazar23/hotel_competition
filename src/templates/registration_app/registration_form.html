@@ -7,6 +7,7 @@
 
 {% block head_links %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/font.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/invalid_div.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -27,6 +28,7 @@
                             <div class="form-group">
                                 <label>{{ field.label_tag }}</label>
                                 {{ field }}
+                                <div data-invalid-div="invalid"></div>
                             </div>
                         {% endfor %}
                     </div>
@@ -37,6 +39,7 @@
                             <div class="form-group">
                                 <label>{{ field.label_tag }}</label>
                                 {{ field }}
+                                <div data-invalid-div="invalid"></div>
                             </div>
                         {% endfor %}
                     </div>
@@ -47,6 +50,7 @@
                             <div class="form-group">
                                 <label>{{ field.label_tag }}</label>
                                 {{ field }}
+                                <div data-invalid-div="invalid"></div>
                             </div>
                         {% endfor %}
                     </div>
@@ -64,4 +68,5 @@
     </div>
 
     <script src="{% static 'js/add_team_member.js' %}"></script>
+    <script src="{% static 'js/check_empty_field.js' %}"></script>
 {% endblock %}
