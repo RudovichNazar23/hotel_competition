@@ -31,8 +31,11 @@
                                 <div data-invalid-div="invalid"></div>
                             </div>
                         {% endfor %}
+                        <button class="btn btn-success mt-2" data-action="continue">
+                            Continue
+                        </button>
                     </div>
-                    <hr>
+                    <hr class="d-none">
                     <div class="container d-flex flex-column d-none">
                         <div class="text-center"><strong>Guardian form</strong></div>
                         {% for field in guardian_form %}
@@ -42,8 +45,11 @@
                                 <div data-invalid-div="invalid"></div>
                             </div>
                         {% endfor %}
+                        <button class="btn btn-success mt-2" data-action="continue">
+                            Continue
+                        </button>
                     </div>
-                    <hr>
+                    <hr class="d-none">
                     <div class="container d-flex flex-column d-none">
                         <div class="text-center"><strong>Team member1 form</strong></div>
                         {% for field in team_form %}
@@ -55,18 +61,22 @@
                         {% endfor %}
                     </div>
                     <hr>
+                    <div class="container bg-light p-3 mt-3 rounded d-none" id="add_container">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                          <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                        </svg>
+                        <button class="btn btn-info" id="team_member" type="submit">
+                            Add person to the team
+                        </button>
+                    </div>
+                    <button class="btn btn-success mt-2 d-none">
+                        Submit
+                    </button>
                 </form>
-            </div>
-            <div class="container bg-light p-3 mt-3 rounded d-none" id="add_container">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                      <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                    </svg>
-                <button class="btn btn-info" id="team_member" type="submit">
-                    Add person to the team
-                </button>
             </div>
     </div>
 
     <script src="{% static 'js/add_team_member.js' %}"></script>
     <script src="{% static 'js/check_empty_field.js' %}"></script>
+    <script src="{% static 'js/add_form_object.js' %}"></script>
 {% endblock %}
