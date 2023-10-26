@@ -15,6 +15,7 @@ class InputHandler{
 
         sibling.classList.remove("d-none");
         next_sibling.classList.remove("d-none");
+        next_sibling.scrollIntoView();
 
         let sec_team_member = this.getNextSibling(next_sibling.nextElementSibling);
         if(sec_team_member.id === "add_container"){
