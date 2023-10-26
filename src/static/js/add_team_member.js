@@ -40,21 +40,30 @@ class CreateTeamMemberHandler{
     build(inputs){
         let div1 = this.createDivTag(["container", "d-flex", "flex-column"]);
         let head_div = this.createDivTag(["text-center",], "<strong>Team member2 form</strong>");
-        let form_group_div = this.createDivTag(["form-group",]);
-        let label_name = this.createLabelTag("Name");
-        let label_surname = this.createLabelTag("Surname");
-        let label_clause = this.createLabelTag("Clause");
-        let name_input = this.createInputTag("text");
-        let surname_input = this.createInputTag("text");
-        let clause_input = this.createInputTag("file");
+
+        let name_form_group = this.createFormGroup("Name", "text");
+        let surname_form_group = this.createFormGroup("Surname", "text");
+        let clause_form_group = this.createFormGroup("Clause", "file");
 
         div1.append(head_div);
-        form_group_div.append(
-            label_name, name_input, label_surname, surname_input, label_clause, clause_input,
+        div1.append(
+            name_form_group, surname_form_group, clause_form_group
         );
-        div1.append(form_group_div);
         this.form.insertBefore(div1, document.getElementById("button"));
         div1.scrollIntoView();
+    };
+
+    createFormGroup(label_name, input_type){
+        let form_group_div = this.createDivTag(["form-group"]);
+        let label = this.createLabelTag(label_name);
+        let input = this.createInputTag(input_type);
+
+        input.addEventListener("blur", checkFieldIsEmpty);
+        input.addEventListener("focus", focusFormField);
+
+        let error_div = this.createDivTag();
+        form_group_div.append(label, input, error_div);
+        return form_group_div;
     };
 };
 
