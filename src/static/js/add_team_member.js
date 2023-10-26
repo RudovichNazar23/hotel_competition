@@ -50,10 +50,11 @@ class CreateTeamMemberHandler{
 
         div1.append(head_div);
         form_group_div.append(
-            label_name, name_input, label_surname, surname_input, label_clause, clause_input
+            label_name, name_input, label_surname, surname_input, label_clause, clause_input,
         );
         div1.append(form_group_div);
-        this.form.append(div1);
+        this.form.insertBefore(div1, document.getElementById("button"));
+        div1.scrollIntoView();
     };
 };
 
