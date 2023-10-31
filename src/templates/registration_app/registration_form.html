@@ -20,7 +20,7 @@
                 </div>
             </div>
             <div class="container border bg-light rounded p-3 mt-3">
-                <form id="registration_form">
+                <form id="registration_form">{% csrf_token %}
                     <div class="container d-flex flex-column">
                         <div class="text-center"><strong>High school form</strong></div>
                         <hr>
@@ -77,7 +77,11 @@
                 </form>
             </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+            crossorigin="anonymous"></script>
+    <script src="{% static 'js/getCookie.js' %}"></script>
     <script src="{% static 'js/check_empty_field.js' %}"></script>
     <script src="{% static 'js/add_form_object.js' %}"></script>
     <script src="{% static 'js/add_team_member.js' %}"></script>
+
 {% endblock %}
