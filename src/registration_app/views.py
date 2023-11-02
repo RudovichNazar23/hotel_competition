@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect
-from django.template import RequestContext
-from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.generic.base import View
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 
 from .forms import CreateHighSchoolForm, CreateGuardianForm, CreateTeamMemberForm
+from service.mixins.get_model_by_form_field import GetModelByFormFieldMixin
 
 
-class RegistrationView(View):
+class RegistrationView(View, GetModelByFormFieldMixin):
     template_name = "registration_app/registration_form.html"
     high_school_form = CreateHighSchoolForm()
     guardian_form = CreateGuardianForm()
@@ -20,6 +21,24 @@ class RegistrationView(View):
         })
 
     def post(self, request):
-        print("test AJAX")
-        return redirect("/")
-
+        field_name = str(request.POST.get("field_name"))
+        field_value = str(request.POST.get("field_value"))
+        model = self.get_model_by_field(form_classes=[self.high_school_form, self.guardian_form, self.guardian_form],
+                                        field=field_name
+                                        )
+        try:
+            get_object_or_404(klass=model, **{field_name: field_value})
+            return JsonResponse(
+                    data={
+                        "status": 400,
+                        "message": "Object with this data already exists"
+                    },
+                    status=200
+                )
+        except Exception as exception:
+            return JsonResponse(
+                    data={
+                        "status": 200,
+                    },
+                    status=200
+                )
