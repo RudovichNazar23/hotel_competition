@@ -26,7 +26,7 @@
                         <hr>
                         {% for field in high_school_form %}
                             <div class="form-group">
-                                <label>{{ field.label_tag }}</label>
+                                {{ field.label_tag }}
                                 {{ field }}
                                 <div data-invalid-div="invalid"></div>
                             </div>

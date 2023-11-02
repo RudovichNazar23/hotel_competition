@@ -13,18 +13,24 @@ class BaseCreateForm(forms.ModelForm):
 
 
 class CreateHighSchoolForm(BaseCreateForm):
+    model = HighSchool
+
     class Meta:
         model = HighSchool
         fields = "__all__"
 
 
 class CreateGuardianForm(BaseCreateForm):
+    model = Guardian
+
     class Meta:
         model = Guardian
         fields = "__all__"
 
 
 class CreateTeamMemberForm(BaseCreateForm):
+    model = TeamMember
+
     class Meta:
         model = TeamMember
         fields = "__all__"
