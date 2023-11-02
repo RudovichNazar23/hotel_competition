@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 from django.views.generic.base import View
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 
 from .forms import CreateHighSchoolForm, CreateGuardianForm, CreateTeamMemberForm
 from service.mixins.get_model_by_form_field import GetModelByFormFieldMixin
-from service.get_object import get_model_object
 
 
 class RegistrationView(View, GetModelByFormFieldMixin):
@@ -26,20 +26,19 @@ class RegistrationView(View, GetModelByFormFieldMixin):
         model = self.get_model_by_field(form_classes=[self.high_school_form, self.guardian_form, self.guardian_form],
                                         field=field_name
                                         )
-        obj = get_model_object(model=model, field_name=field_value)
-        if obj:
+        try:
+            get_object_or_404(klass=model, **{field_name: field_value})
             return JsonResponse(
-                data={
-                    "status": 400,
-                    "message": "Object with this data already exists"
-                },
-                status=200
-            )
-        else:
+                    data={
+                        "status": 400,
+                        "message": "Object with this data already exists"
+                    },
+                    status=200
+                )
+        except Exception as exception:
             return JsonResponse(
-                data={
-                    "status": 200,
-                    "message": "Ok!"
-                },
-                status=200
-            )
+                    data={
+                        "status": 200,
+                    },
+                    status=200
+                )
