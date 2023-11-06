@@ -3,36 +3,36 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 class HighSchool(models.Model):
-    full_name = models.CharField(max_length=255, unique=True, blank=True)
+    full_name = models.CharField(max_length=255, unique=True, blank=False)
     short_name = models.CharField(max_length=255, unique=True, blank=False)
     city = models.CharField(max_length=255)
     post_code = models.CharField(max_length=6)
     street = models.CharField(max_length=100)
-    mobile_phone = PhoneNumberField(region="PL", unique=True, blank=True)
-    email = models.EmailField(unique=True, blank=True)
+    school_mobile_phone = PhoneNumberField(region="PL", unique=True, blank=False)
+    school_email = models.EmailField(unique=True, blank=False)
 
     def __str__(self):
         return f"{self.full_name}"
 
 
 class Guardian(models.Model):
-    name = models.CharField(max_length=255, blank=True)
-    surname = models.CharField(max_length=255, blank=True)
-    mobile_phone = PhoneNumberField(region="PL", unique=True, blank=True)
-    email = models.EmailField(unique=True, blank=True)
-    clause = models.FileField(upload_to="clauses/")
+    guardian_name = models.CharField(max_length=255, blank=False)
+    guardian_surname = models.CharField(max_length=255, blank=False)
+    guardian_mobile_phone = PhoneNumberField(region="PL", unique=True, blank=False)
+    guardian_email = models.EmailField(unique=True, blank=False)
+    guardian_clause = models.FileField(upload_to="clauses/", blank=True)
 
     def __str__(self):
-        return f"{self.name} - {self.surname}"
+        return f"{self.guardian_name} - {self.guardian_surname}"
 
 
 class TeamMember(models.Model):
-    name = models.CharField(max_length=255, blank=True)
-    surname = models.CharField(max_length=255, blank=True)
-    clause = models.FileField(upload_to="clauses/")
+    member_name = models.CharField(max_length=255, blank=True)
+    member_surname = models.CharField(max_length=255, blank=True)
+    member_clause = models.FileField(upload_to="clauses/", blank=True)
 
     def __str__(self):
-        return f"{self.name} - {self.surname}"
+        return f"{self.member_name} - {self.member_surname}"
 
 
 class SchoolTeam(models.Model):

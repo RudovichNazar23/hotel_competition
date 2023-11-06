@@ -21,7 +21,7 @@
                 </div>
             </div>
             <div class="container border bg-light rounded p-3 mt-3">
-                <form id="registration_form">{% csrf_token %}
+                <form id="registration_form" action="{% url 'create_school_team' %}" method="POST">{% csrf_token %}
                     <div class="container d-flex flex-column">
                         <div class="text-center"><strong>High school form</strong></div>
                         <hr>
@@ -29,6 +29,7 @@
                             <div class="form-group">
                                 {{ field.label_tag }}
                                 {{ field }}
+                                {{ field.errors }}
                                 <div data-invalid-div="invalid"></div>
                             </div>
                         {% endfor %}
@@ -43,6 +44,7 @@
                             <div class="form-group">
                                 <label>{{ field.label_tag }}</label>
                                 {{ field }}
+                                {{ field.errors }}
                                 <div data-invalid-div="invalid"></div>
                             </div>
                         {% endfor %}
@@ -57,6 +59,7 @@
                             <div class="form-group">
                                 <label>{{ field.label_tag }}</label>
                                 {{ field }}
+                                {{ field.errors }}
                                 <div data-invalid-div="invalid"></div>
                             </div>
                         {% endfor %}
@@ -71,7 +74,7 @@
                         </button>
                     </div>
                     <div class="container d-flex flex-row align-items-center justify-content-center p-2 d-grid gap-2 d-none" id="button">
-                        <button class="btn btn-success">
+                        <button class="btn btn-success" id="submit_button">
                             Submit
                         </button>
                     </div>
@@ -82,7 +85,9 @@
             crossorigin="anonymous"></script>
     <script src="{% static 'js/getCookie.js' %}"></script>
     <script src="{% static 'js/check_empty_field.js' %}"></script>
+    <script src="{% static 'js/check_field_data.js' %}"></script>
     <script src="{% static 'js/add_form_object.js' %}"></script>
     <script src="{% static 'js/add_team_member.js' %}"></script>
+    <script src="{% static 'js/create_school_team.js' %}"></script>
 
 {% endblock %}
