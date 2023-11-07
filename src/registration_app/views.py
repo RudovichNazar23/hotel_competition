@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.views.generic.base import View
+from django.views.generic.base import View, TemplateView
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 
@@ -8,6 +8,8 @@ from .models import SchoolTeam
 
 
 from service.mixins.get_model_by_form_field import GetModelByFormFieldMixin
+from service.mixins.get_form_data_mixin import GetFormDataMixin
+
 from service.create_model_object import create_model_object
 
 
@@ -48,7 +50,7 @@ class RegistrationView(View, GetModelByFormFieldMixin):
                 )
 
 
-class CreateSchoolTeamView(View):
+class CreateSchoolTeamView(View, GetFormDataMixin):
     high_school_form = CreateHighSchoolForm()
     guardian_form = CreateGuardianForm()
     team_member_form = CreateTeamMemberForm()
@@ -60,48 +62,34 @@ class CreateSchoolTeamView(View):
         team_member_form_data = self.get_form_data(form_fields=self.team_member_form.fields.keys())
         team_member_form_data.pop("member_clause")
 
-        self.high_school_form = CreateHighSchoolForm(high_school_data)
-        self.guardian_form = CreateGuardianForm(guardian_form_data)
-        self.team_member_form = CreateTeamMemberForm(team_member_form_data)
+        high_school_object = create_model_object(
+            model=self.high_school_form.model,
+            **high_school_data
+        )
+        guardian_object = create_model_object(
+            model=self.guardian_form.model,
+            guardian_clause=request.FILES.get("guardian_clause"),
+            **guardian_form_data
+        )
+        team_member_object = create_model_object(
+            model=self.team_member_form.model,
+            member_clause=request.FILES.get("member_clause"),
+            **team_member_form_data
+        )
+        school_team = create_model_object(
+            model=SchoolTeam,
+            high_school=high_school_object,
+            guardian=guardian_object
+        )
+        return JsonResponse(
+            data={
+                "status": 200,
+                "message": "Your team is created",
+                "success_url_name": "success_page"
+            },
+            status=200
+        )
 
-        if self.high_school_form.is_valid() and self.guardian_form.is_valid() and self.team_member_form.is_valid():
-            high_school_object = create_model_object(
-                model=self.high_school_form.model,
-                **high_school_data
-            )
-            guardian_object = create_model_object(
-                model=self.guardian_form.model,
-                guardian_clause=request.FILES.get("guardian_clause"),
-                **guardian_form_data
-            )
-            team_member_object = create_model_object(
-                model=self.team_member_form.model,
-                member_clause=request.FILES.get("member_clause"),
-                **team_member_form_data
-            )
-            school_team = create_model_object(
-                model=SchoolTeam,
-                high_school=high_school_object,
-                guardian=guardian_object
-            )
-            return JsonResponse(
-                data={
-                    "status": 200,
-                    "message": "Your team is created"
-                },
-                status=200
-            )
-        else:
-            return JsonResponse(
-                data={
-                    "status": 400,
-                    "message": "Error"
-                },
-                status=200
-            )
 
-    def get_form_data(self, form_fields):
-        form_data = {}
-        for field in form_fields:
-            form_data[field] = self.request.POST.get(field)
-        return form_data
+class SuccessPageView(TemplateView):
+    template_name = "registration_app/success_page.html"
