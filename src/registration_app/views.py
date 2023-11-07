@@ -79,15 +79,26 @@ class CreateSchoolTeamView(View):
                 member_clause=request.FILES.get("member_clause"),
                 **team_member_form_data
             )
-            return redirect("/")
-            # school_team = create_model_object(
-            #     model=SchoolTeam,
-            #     high_school=high_school_object,
-            #     guardian=guardian_object
-            # )
+            school_team = create_model_object(
+                model=SchoolTeam,
+                high_school=high_school_object,
+                guardian=guardian_object
+            )
+            return JsonResponse(
+                data={
+                    "status": 200,
+                    "message": "Your team is created"
+                },
+                status=200
+            )
         else:
-            print("FALSE")
-            return redirect("/")
+            return JsonResponse(
+                data={
+                    "status": 400,
+                    "message": "Error"
+                },
+                status=200
+            )
 
     def get_form_data(self, form_fields):
         form_data = {}
