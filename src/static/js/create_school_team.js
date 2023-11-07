@@ -13,22 +13,23 @@ function createFormDataObject(){
 
 function sendFormData(event){
     event.preventDefault();
-    event.target.click(
-        $.ajax(
-            {
-                "type": "POST",
-                "url": document.getElementById("registration_form").action,
-                "data": createFormDataObject(),
-                headers: {"X-CSRFTOKEN": getCookie("csrftoken")},
-                processData: false,
-                contentType: false
+    $.ajax(
+        {
+            "type": "POST",
+            "url": document.getElementById("registration_form").action,
+            "data": createFormDataObject(),
+            headers: {"X-CSRFTOKEN": getCookie("csrftoken")},
+            processData: false,
+            contentType: false,
+            success: function(response){
+                console.log("Ok", response);
+            },
+            error: function(response){
+                console.log("Error", response);
             }
-        ).always(
-            function(){
-                createFormDataObject();
-            }
-        )
-    )
+        }
+    );
+    
 };
 
 
