@@ -22,11 +22,8 @@ function sendFormData(event){
             processData: false,
             contentType: false,
             success: function(response){
-                console.log("Ok", response);
+                window.location.replace(window.location.origin + "/registration/" + `${response.success_url_name}`);
             },
-            error: function(response){
-                console.log("Error", response);
-            }
         }
     );
     
