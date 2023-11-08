@@ -11,10 +11,7 @@ function checkFieldData(event){
             },
             dataType: "json",
             success: function(response){
-                if(response.status === 200){
-                    event.target.classList.add("success_field")
-                }
-                else{
+                if(!response.status === 200){
                     let sibling = event.target.nextElementSibling;
                     AddFieldAttributes(event.target, ["invalid_field",]);
                     AddFieldAttributes(sibling, ["p-2", "m-2", "text-danger"], response.message);
