@@ -20,10 +20,10 @@ class CreateTeamMemberHandler{
         return label;
     };
 
-    createInputTag(type){
+    createInputTag(type, name){
         let new_input = document.createElement("input");
         new_input.type = type;
-        new_input.name = "second_member";
+        new_input.name = name;
         new_input.classList.add("form-control");
         return new_input;
     };
@@ -37,13 +37,13 @@ class CreateTeamMemberHandler{
         return div;
     };
 
-    build(inputs){
+    build(){
         let div1 = this.createDivTag(["container", "d-flex", "flex-column"]);
         let head_div = this.createDivTag(["text-center",], "<strong>Team member2 form</strong>");
 
-        let name_form_group = this.createFormGroup("Name", "text");
-        let surname_form_group = this.createFormGroup("Surname", "text");
-        let clause_form_group = this.createFormGroup("Clause", "file");
+        let name_form_group = this.createFormGroup("Member Name", "text", "second_member_name");
+        let surname_form_group = this.createFormGroup("Member Surname", "text", "second_member_surname");
+        let clause_form_group = this.createFormGroup("Member Clause", "file", "second_member_clause");
 
         div1.append(head_div);
         div1.append(
@@ -53,10 +53,10 @@ class CreateTeamMemberHandler{
         div1.scrollIntoView();
     };
 
-    createFormGroup(label_name, input_type){
+    createFormGroup(label_name, input_type, input_name){
         let form_group_div = this.createDivTag(["form-group"]);
         let label = this.createLabelTag(label_name);
-        let input = this.createInputTag(input_type);
+        let input = this.createInputTag(input_type, input_name);
 
         input.addEventListener("blur", checkFieldIsEmpty);
         input.addEventListener("focus", focusFormField);
