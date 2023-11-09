@@ -59,8 +59,12 @@ class CreateSchoolTeamView(View, GetFormDataMixin):
         high_school_data = self.get_form_data(form_fields=self.high_school_form.fields.keys())
         guardian_form_data = self.get_form_data(form_fields=self.guardian_form.fields.keys())
         guardian_form_data.pop("guardian_clause")
-        team_member_form_data = self.get_form_data(form_fields=self.team_member_form.fields.keys())
-        team_member_form_data.pop("member_clause")
+        first_team_member_form_data = self.get_form_data(form_fields=self.team_member_form.fields.keys())
+        first_team_member_form_data.pop("member_clause")
+        second_team_member_form_data = {
+            "member_name": request.POST.get("second_member_name"),
+            "member_surname": request.POST.get("second_member_surname"),
+        }
 
         high_school_object = create_model_object(
             model=self.high_school_form.model,
@@ -71,16 +75,18 @@ class CreateSchoolTeamView(View, GetFormDataMixin):
             guardian_clause=request.FILES.get("guardian_clause"),
             **guardian_form_data
         )
-        team_member_object = create_model_object(
+        first_team_member_object = create_model_object(
             model=self.team_member_form.model,
             member_clause=request.FILES.get("member_clause"),
-            **team_member_form_data
+            **first_team_member_form_data
         )
         school_team = create_model_object(
             model=SchoolTeam,
             high_school=high_school_object,
             guardian=guardian_object
         )
+        school_team.members.add(first_team_member_object)
+
         return JsonResponse(
             data={
                 "status": 200,
@@ -88,7 +94,7 @@ class CreateSchoolTeamView(View, GetFormDataMixin):
                 "success_url_name": "success_page"
             },
             status=200
-        )
+        ) 
 
 
 class SuccessPageView(TemplateView):
