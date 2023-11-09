@@ -61,10 +61,7 @@ class CreateSchoolTeamView(View, GetFormDataMixin):
         guardian_form_data.pop("guardian_clause")
         first_team_member_form_data = self.get_form_data(form_fields=self.team_member_form.fields.keys())
         first_team_member_form_data.pop("member_clause")
-        second_team_member_form_data = {
-            "member_name": request.POST.get("second_member_name"),
-            "member_surname": request.POST.get("second_member_surname"),
-        }
+        second_team_member_form_data = self.get_second_team_member()
 
         high_school_object = create_model_object(
             model=self.high_school_form.model,
@@ -87,6 +84,12 @@ class CreateSchoolTeamView(View, GetFormDataMixin):
         )
         school_team.members.add(first_team_member_object)
 
+        if self.check_form_data(second_team_member_form_data):
+            second_team_member = create_model_object(
+                model=self.team_member_form.model, member_clause=request.FILES.get("second_member_clause"), **second_team_member_form_data
+            )
+            school_team.members.add(second_team_member)
+
         return JsonResponse(
             data={
                 "status": 200,
@@ -95,6 +98,14 @@ class CreateSchoolTeamView(View, GetFormDataMixin):
             },
             status=200
         ) 
+    
+    def get_second_team_member(self):
+        second_team_member_form_data = {
+            "member_name": self.request.POST.get("second_member_name"),
+            "member_surname": self.request.POST.get("second_member_surname"),
+        }
+        return second_team_member_form_data
+
 
 
 class SuccessPageView(TemplateView):
