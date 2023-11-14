@@ -1,6 +1,9 @@
 from django import forms
 from .models import HighSchool, Guardian, TeamMember
 
+from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV2Checkbox
+
 
 class BaseCreateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -19,6 +22,8 @@ class CreateHighSchoolForm(BaseCreateForm):
         model = HighSchool
         fields = "__all__"
 
+    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
+
 
 class CreateGuardianForm(BaseCreateForm):
     model = Guardian
@@ -26,6 +31,8 @@ class CreateGuardianForm(BaseCreateForm):
     class Meta:
         model = Guardian
         fields = "__all__"
+
+    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
 
 
 class CreateTeamMemberForm(BaseCreateForm):
@@ -35,4 +42,4 @@ class CreateTeamMemberForm(BaseCreateForm):
         model = TeamMember
         fields = "__all__"
 
-
+    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())

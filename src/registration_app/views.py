@@ -1,11 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.views.generic.base import View, TemplateView
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 
 from .forms import CreateHighSchoolForm, CreateGuardianForm, CreateTeamMemberForm
 from .models import SchoolTeam
-
 
 from service.mixins.get_model_by_form_field import GetModelByFormFieldMixin
 from service.mixins.get_form_data_mixin import GetFormDataMixin
@@ -35,19 +34,19 @@ class RegistrationView(View, GetModelByFormFieldMixin):
         try:
             get_object_or_404(klass=model, **{field_name: field_value})
             return JsonResponse(
-                    data={
-                        "status": 400,
-                        "message": "Object with this data already exists"
-                    },
-                    status=200
-                )
+                data={
+                    "status": 400,
+                    "message": "Object with this data already exists"
+                },
+                status=200
+            )
         except Exception as exception:
             return JsonResponse(
-                    data={
-                        "status": 200,
-                    },
-                    status=200
-                )
+                data={
+                    "status": 200,
+                },
+                status=200
+            )
 
 
 class CreateSchoolTeamView(View, GetFormDataMixin):
@@ -86,7 +85,8 @@ class CreateSchoolTeamView(View, GetFormDataMixin):
 
         if self.check_form_data(second_team_member_form_data):
             second_team_member = create_model_object(
-                model=self.team_member_form.model, member_clause=request.FILES.get("second_member_clause"), **second_team_member_form_data
+                model=self.team_member_form.model, member_clause=request.FILES.get("second_member_clause"),
+                **second_team_member_form_data
             )
             school_team.members.add(second_team_member)
 
@@ -97,15 +97,14 @@ class CreateSchoolTeamView(View, GetFormDataMixin):
                 "success_url_name": "success_page"
             },
             status=200
-        ) 
-    
+        )
+
     def get_second_team_member(self):
         second_team_member_form_data = {
             "member_name": self.request.POST.get("second_member_name"),
             "member_surname": self.request.POST.get("second_member_surname"),
         }
         return second_team_member_form_data
-
 
 
 class SuccessPageView(TemplateView):
