@@ -12,7 +12,7 @@ from service.mixins.get_form_data_mixin import GetFormDataMixin
 from service.mixins.create_model_object_mixin import CreateModelObjectMixin
 
 from service.create_model_object import create_model_object
-from service.send_email_to_client import send_email_to_client
+from service.send_email_to_client import SendMailToClientMixin
 
 
 class RegistrationView(View, GetModelByFormFieldMixin):
@@ -52,10 +52,12 @@ class RegistrationView(View, GetModelByFormFieldMixin):
             )
 
 
-class CreateSchoolTeamView(View, GetFormDataMixin, CreateModelObjectMixin):
+class CreateSchoolTeamView(View, GetFormDataMixin, CreateModelObjectMixin, SendMailToClientMixin):
     high_school_form = CreateHighSchoolForm()
     guardian_form = CreateGuardianForm()
     team_member_form = CreateTeamMemberForm()
+    subject = "Test email"
+    message_body = "Your school has been successfully registered"
 
     def post(self, request):
         high_school_data = self.get_form_data(
@@ -82,9 +84,11 @@ class CreateSchoolTeamView(View, GetFormDataMixin, CreateModelObjectMixin):
             second_team_member = create_model_object(self.team_member_form.model, member_clause=self.request.POST.get("second_member_clause"), **second_team_member_form_data)
             school_team.members.add(second_team_member)
 
-        send_email_to_client(
-            clients=[high_school_data["school_email"], guardian_form_data["guardian_email"]],
-            message="This email proves that your team has been registered"
+        self.send_email_to_client(
+            (
+                self.create_message(high_school_data.get("school_email")),
+                self.create_message(guardian_form_data.get("guardian_email"))
+            )
         )
 
         return JsonResponse(
