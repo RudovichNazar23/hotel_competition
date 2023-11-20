@@ -14,6 +14,8 @@ class BaseCreateForm(forms.ModelForm):
         for field in self.fields:
             self.fields[field].widget.attrs.update({"class": "form-control"})
 
+    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox(), required=True)
+
 
 class CreateHighSchoolForm(BaseCreateForm):
     model = HighSchool
@@ -21,8 +23,6 @@ class CreateHighSchoolForm(BaseCreateForm):
     class Meta:
         model = HighSchool
         fields = "__all__"
-
-    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
 
 
 class CreateGuardianForm(BaseCreateForm):
@@ -32,8 +32,6 @@ class CreateGuardianForm(BaseCreateForm):
         model = Guardian
         fields = "__all__"
 
-    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
-
 
 class CreateTeamMemberForm(BaseCreateForm):
     model = TeamMember
@@ -41,5 +39,3 @@ class CreateTeamMemberForm(BaseCreateForm):
     class Meta:
         model = TeamMember
         fields = "__all__"
-
-    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
