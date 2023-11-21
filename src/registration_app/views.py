@@ -1,4 +1,3 @@
-import requests
 from django.shortcuts import render
 from django.views.generic.base import View, TemplateView
 from django.http import JsonResponse
@@ -90,7 +89,6 @@ class CreateSchoolTeamView(View, GetFormDataMixin, CreateModelObjectMixin, SendM
                 self.create_message(guardian_form_data.get("guardian_email"))
             )
         )
-
         return JsonResponse(
             data={
                 "status": 200,

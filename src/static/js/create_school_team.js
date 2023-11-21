@@ -22,7 +22,7 @@ class SendFormDataHandler{
         }
         return form_data;
     };
-    
+
     sendFormData(){
         $.ajax(
             {
