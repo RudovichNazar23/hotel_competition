@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.base import View, TemplateView
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
@@ -24,7 +24,7 @@ class RegistrationView(View, GetModelByFormFieldMixin):
         return render(request, template_name=self.template_name, context={
             "high_school_form": self.high_school_form,
             "guardian_form": self.guardian_form,
-            "team_form": self.team_member_form,
+            "team_member_form": self.team_member_form,
         })
 
     def post(self, request):
@@ -61,7 +61,7 @@ class CreateSchoolTeamView(View, GetFormDataMixin, CreateModelObjectMixin, SendM
     def post(self, request):
         high_school_data = self.get_form_data(
             form_fields=self.high_school_form.fields.keys(),
-            keys_to_delete=["captcha",]
+            keys_to_delete=["captcha", ]
         )
         guardian_form_data = self.get_form_data(
             form_fields=self.guardian_form.fields.keys(),
@@ -73,14 +73,18 @@ class CreateSchoolTeamView(View, GetFormDataMixin, CreateModelObjectMixin, SendM
         )
         high_school_object = self.create_object(self.high_school_form.model, high_school_data)
         guardian_object = self.create_object(self.guardian_form.model, guardian_form_data, "guardian_clause")
-        first_team_member_object = self.create_object(self.team_member_form.model, first_team_member_form_data, "member_clause")
+        first_team_member_object = self.create_object(self.team_member_form.model, first_team_member_form_data,
+                                                      "member_clause")
 
         school_team = create_model_object(model=SchoolTeam, high_school=high_school_object, guardian=guardian_object)
         school_team.members.add(first_team_member_object)
 
-        second_team_member_form_data = {"member_name": request.POST.get("second_member_name"), "member_surname": request.POST.get("second_member_surname")}
+        second_team_member_form_data = {"member_name": request.POST.get("second_member_name"),
+                                        "member_surname": request.POST.get("second_member_surname")}
         if self.check_form_data(second_team_member_form_data):
-            second_team_member = create_model_object(self.team_member_form.model, member_clause=self.request.POST.get("second_member_clause"), **second_team_member_form_data)
+            second_team_member = create_model_object(self.team_member_form.model,
+                                                     member_clause=self.request.POST.get("second_member_clause"),
+                                                     **second_team_member_form_data)
             school_team.members.add(second_team_member)
 
         self.send_email_to_client(
