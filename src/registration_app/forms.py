@@ -14,7 +14,6 @@ class BaseCreateForm(forms.ModelForm):
         for field in self.fields:
             self.fields[field].widget.attrs.update({"class": "form-control"})
 
-    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox(), required=True)
 
 
 class CreateHighSchoolForm(BaseCreateForm):
