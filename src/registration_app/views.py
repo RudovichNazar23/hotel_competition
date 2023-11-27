@@ -59,41 +59,47 @@ class CreateSchoolTeamView(View, GetFormDataMixin, CreateModelObjectMixin, SendM
     message_body = "Your school has been successfully registered"
 
     def post(self, request):
-        high_school_form = CreateHighSchoolForm(request.POST)
-        guardian_form = CreateGuardianForm(request.POST, request.FILES)
-        first_team_member_form = CreateTeamMemberForm(request.POST, request.FILES)
+        high_school_data = self.get_form_data(
+            form_fields=self.high_school_form.fields.keys(),
+        )
+        guardian_form_data = self.get_form_data(
+            form_fields=self.guardian_form.fields.keys(),
+            # keys_to_delete=["guardian_clause"]
+        )
+        first_team_member_form_data = self.get_form_data(
+            form_fields=self.team_member_form.fields.keys(),
+            # keys_to_delete=["member_clause"]
+        )
+        high_school_object = self.create_object(self.high_school_form.model, high_school_data)
+        guardian_object = self.create_object(self.guardian_form.model, guardian_form_data)
+        first_team_member_object = self.create_object(self.team_member_form.model, first_team_member_form_data,
+                                                      )
 
-        second_member_data = self.get_form_data(form_fields=["second_member_name", "second_member_surname"])
+        school_team = create_model_object(model=SchoolTeam, high_school=high_school_object, guardian=guardian_object)
+        school_team.members.add(first_team_member_object)
 
-        if high_school_form.is_valid() and guardian_form.is_valid() and first_team_member_form.is_valid():
-            high_school_object = high_school_form.save()
-            guardian_object = guardian_form.save()
-            first_member_object = first_team_member_form.save()
-            second_member_object = None
+        second_team_member_form_data = {"member_name": request.POST.get("second_member_name"),
+                                        "member_surname": request.POST.get("second_member_surname")}
+        if self.check_form_data(second_team_member_form_data):
+            second_team_member = create_model_object(self.team_member_form.model,
+                                                     member_clause=self.request.FILES.get("second_member_clause"),
+                                                     **second_team_member_form_data)
+            school_team.members.add(second_team_member)
 
-            if second_member_data:
-                second_member_form = CreateTeamMemberForm(second_member_data, request.FILES)
-                if second_member_form.is_valid():
-                    second_member_object = create_model_object(model=self.team_member_form.model,
-                                                               member_name=second_member_data.get("second_member_name"),
-                                                               member_surname=second_member_data.get(
-                                                                   "second_member_surname"),
-                                                               member_clause=request.FILES.get("second_member_clause"))
-            school_team_object = create_model_object(model=SchoolTeam, high_school=high_school_object,
-                                                     guardian=guardian_object, first_member=first_member_object,
-                                                     second_member=second_member_object)
-            # self.send_email_to_client(
-            #     (
-            #         self.create_message(high_school_data.get("school_email")),
-            #         self.create_message(guardian_form_data.get("guardian_email"))
-            #     )
-            # )
-            return JsonResponse(
-                data={"status": 200, "message": "Your team is created", "success_url_name": "success_page"},
-                status=200
-                )
-        else:
-            return JsonResponse(data={"status": 400, "message": "Form is not valid", "error_url_name": "error_page"}, status=200)
+        self.send_email_to_client(
+            (
+                self.create_message(high_school_data.get("school_email")),
+                self.create_message(guardian_form_data.get("guardian_email"))
+            )
+        )
+        return JsonResponse(
+            data={
+                "status": 200,
+                "message": "Your team is created",
+                "success_url_name": "success_page"
+            },
+            status=200
+        )
 
 
 class SuccessPageView(TemplateView):
