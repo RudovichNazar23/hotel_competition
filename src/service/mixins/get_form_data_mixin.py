@@ -1,20 +1,14 @@
-class GetFormDataMixin:
-    def get_form_data(self, form_fields, keys_to_delete=None):
+class GetFormDataOrNoneMixin:
+    def get_form_data_or_none(self, request_keys: list, form_keys: list):
+
         form_data = {}
-        for field in form_fields:
-            data = self.request.POST.get(field)
-            if data:
-                form_data[field] = data
-            else:
-                return None
 
-        if keys_to_delete and type(keys_to_delete) == list:
-            for key in keys_to_delete:
-                form_data.pop(key)
-        return form_data
+        test = dict(zip(request_keys, form_keys))
 
-    def check_form_data(self, form_data: dict):
-        for key in form_data:
-            if not form_data[key]:
-                return False
-        return True
+        for key in test:
+            form_data[test[key]] = self.request.POST.get(key)
+        return self._check_form_data_is_none(form_data)
+
+    @staticmethod
+    def _check_form_data_is_none(form_data: dict):
+        return None if not any(form_data.values()) else form_data
