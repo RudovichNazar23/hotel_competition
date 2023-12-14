@@ -27,7 +27,11 @@
                         <hr>
                         {% for field in high_school_form %}
                             <div class="form-group">
-                                {{ field.label_tag }}
+                                {% if field.field.required %}
+                                    {{ field.label_tag }}<i class="text-danger">*</i>
+                                {% else %}
+                                    {{ field.label_tag }}
+                                {% endif %}
                                 {{ field }}
                                 <div data-invalid-div="invalid"></div>
                             </div>
@@ -41,7 +45,11 @@
                         <div class="text-center"><strong>Guardian form</strong></div>
                         {% for field in guardian_form %}
                             <div class="form-group">
-                                {{ field.label_tag }}
+                                {% if field.field.required %}
+                                    {{ field.label_tag }}<i class="text-danger">*</i>
+                                {% else %}
+                                    {{ field.label_tag }}
+                                {% endif %}
                                 {{ field }}
                                 <div data-invalid-div="invalid"></div>
                             </div>
@@ -55,8 +63,13 @@
                         <div class="text-center"><strong>Team member1 form</strong></div>
                         {% for field in team_member_form %}
                             <div class="form-group">
-                                {{ field.label_tag }}
+                                {% if field.field.required %}
+                                    {{ field.label_tag }}<i class="text-danger">*</i>
+                                {% else %}
+                                    {{ field.label_tag }}
+                                {% endif %}
                                 {{ field }}
+                                {{ field.blank }}
                                 <div data-invalid-div="invalid"></div>
                             </div>
                         {% endfor %}

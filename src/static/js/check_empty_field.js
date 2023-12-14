@@ -21,7 +21,7 @@ function focusFormField(event){
     }
 };
 
-let inputs = document.body.querySelectorAll("input");
+let inputs = document.body.querySelectorAll("input[required]");
 
 for(let input of inputs){
     input.addEventListener("blur", checkFieldIsEmpty);
