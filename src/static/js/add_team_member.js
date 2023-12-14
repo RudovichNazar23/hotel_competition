@@ -25,6 +25,7 @@ class CreateTeamMemberHandler{
         new_input.type = type;
         new_input.name = name;
         new_input.classList.add("form-control");
+        new_input.setAttribute("required", "")
         return new_input;
     };
 
