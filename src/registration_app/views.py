@@ -3,6 +3,9 @@ from django.views.generic.base import View, TemplateView
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 
+from django.utils.http import urlsafe_base64_decode
+from django.utils.encoding import force_str
+
 from .forms import CreateHighSchoolForm, CreateGuardianForm, CreateTeamMemberForm
 from .models import SchoolTeam
 
@@ -13,6 +16,8 @@ from service.mixins.create_object_or_get_none import CreateObjectOrGetNoneMixin
 
 from service.create_model_object import create_model_object
 from service.send_email_to_client import SendMailToClientMixin
+from service.tokens import account_activation_token
+from service.delete_model_object import delete_model_object
 
 
 class RegistrationView(View, GetModelByFormFieldMixin):
@@ -52,41 +57,59 @@ class RegistrationView(View, GetModelByFormFieldMixin):
             )
 
 
-class CreateSchoolTeamView(View, GetFormDataOrNoneMixin, CreateModelObjectMixin, SendMailToClientMixin, CreateObjectOrGetNoneMixin):
+class CreateSchoolTeamView(View, GetFormDataOrNoneMixin, CreateModelObjectMixin, SendMailToClientMixin,
+                           CreateObjectOrGetNoneMixin):
     high_school_form = CreateHighSchoolForm()
     guardian_form = CreateGuardianForm()
     team_member_form = CreateTeamMemberForm()
-    subject = "Test email"
-    message_body = "Your school has been successfully registered"
+    mail_subject = "Test email"
+    email_template_name = "registration_app/email_activation.html"
 
     def post(self, request):
         high_school_form = CreateHighSchoolForm(request.POST)
         guardian_form = CreateGuardianForm(request.POST, request.FILES)
         first_team_member_form = CreateTeamMemberForm(request.POST, request.FILES)
 
-        second_member_data = self.get_form_data_or_none(request_keys=["second_member_name", "second_member_surname"], form_keys=self.team_member_form.__dict__["fields"].keys())
+        second_member_data = self.get_form_data_or_none(request_keys=["second_member_name", "second_member_surname"],
+                                                        form_keys=self.team_member_form.__dict__["fields"].keys())
         if high_school_form.is_valid() and guardian_form.is_valid() and first_team_member_form.is_valid():
             high_school_object = high_school_form.save()
             guardian_object = guardian_form.save()
             first_member_object = first_team_member_form.save()
-            second_member_object = self.create_object_or_get_none(form_data=second_member_data, form_class=CreateTeamMemberForm, files_upload=True, file_key="second_member_clause", form_file_field_key="member_clause")
+            second_member_object = self.create_object_or_get_none(form_data=second_member_data,
+                                                                  form_class=CreateTeamMemberForm, files_upload=True,
+                                                                  file_key="second_member_clause",
+                                                                  form_file_field_key="member_clause")
 
             school_team_object = create_model_object(model=SchoolTeam, high_school=high_school_object,
                                                      guardian=guardian_object, first_member=first_member_object,
                                                      second_member=second_member_object)
-            # self.send_email_to_client(
-            #     (
-            #         self.create_message(high_school_form.cleaned_data.get("school_email")),
-            #         self.create_message(guardian_form.cleaned_data.get("guardian_email"))
-            #     )
-            # )
-            return JsonResponse(
-                data={"status": 200, "message": "Your team is created", "success_url_name": "success_page"},
-                status=200
-                )
+
+            if self.send_activation_link(school_team_object, request.POST.get("school_email")):
+                return JsonResponse(
+                    data={"status": 200, "success_url_name": "success_page"}, status=200)
+            else:
+                return JsonResponse(status=200, data={"status": 400, "error_url_name": "error_page"})
         else:
-            return JsonResponse(data={"status": 400, "message": "Form is not valid", "error_url_name": "error_page"}, status=200)
+            return JsonResponse(data={"status": 400, "message": "Form is not valid", "error_url_name": "error_page"},
+                                status=200)
 
 
 class SuccessPageView(TemplateView):
     template_name = "registration_app/success_page.html"
+
+
+class ActivateSchoolTeamView(View):
+    def get(self, request, uidb64, token):
+        try:
+            uid = force_str(urlsafe_base64_decode(uidb64))
+            school_team = SchoolTeam.objects.get(pk=uid)
+        except:
+            school_team = None
+
+        if school_team is not None and account_activation_token.check_token(school_team, token):
+            school_team.is_active = True
+            school_team.save()
+            return render(request, "registration_app/success_team_activation.html")
+        else:
+            return render(request, "registration_app/error_team_activation.html")
