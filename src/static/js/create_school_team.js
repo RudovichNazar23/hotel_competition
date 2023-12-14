@@ -33,14 +33,19 @@ class SendFormDataHandler{
                 processData: false,
                 contentType: false,
                 success: function(response){
-                    window.location.replace(window.location.origin + "/registration/" + `${response.success_url_name}`);
+                    if(response.status === 200){
+                        window.location.replace(window.location.origin + "/registration/" + `${response.success_url_name}`);
+                    }
+                    else{
+                        window.location.replace(window.location.origin + "/registration/" + `${response.error_url_name}`);
+                    }
                 },
             }
         );
     };
 
     checkErrors(){
-        let inputs = document.body.querySelectorAll("input");
+        let inputs = document.body.querySelectorAll("input[required]");
         let button = document.getElementById("submit_button");
 
         for(let input of inputs){

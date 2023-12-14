@@ -10,5 +10,6 @@ const email_fields = document.body.querySelectorAll("input[type=email]");
 
 for(let input of email_fields){
     input.addEventListener("blur", new ValidateEmailHandler());
+    input.addEventListener("focus", focusFormField);
 }
 

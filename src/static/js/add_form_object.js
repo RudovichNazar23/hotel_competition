@@ -30,7 +30,7 @@ class InputHandler{
     };
 
     getFormInputs(){
-        let form_inputs = Array.from(this.target_parent.querySelectorAll("input"));
+        let form_inputs = Array.from(this.target_parent.querySelectorAll("input[required]"));
         return form_inputs;
     };
 
