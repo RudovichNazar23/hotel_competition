@@ -15,7 +15,6 @@ class BaseCreateForm(forms.ModelForm):
             self.fields[field].widget.attrs.update({"class": "form-control"})
 
 
-
 class CreateHighSchoolForm(BaseCreateForm):
     model = HighSchool
 
@@ -38,3 +37,7 @@ class CreateTeamMemberForm(BaseCreateForm):
     class Meta:
         model = TeamMember
         fields = "__all__"
+
+
+class RecaptchaForm(forms.Form):
+    recaptcha = ReCaptchaField()

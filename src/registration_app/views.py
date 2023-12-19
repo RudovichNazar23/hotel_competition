@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str
 
-from .forms import CreateHighSchoolForm, CreateGuardianForm, CreateTeamMemberForm
+from .forms import CreateHighSchoolForm, CreateGuardianForm, CreateTeamMemberForm, RecaptchaForm
 from .models import SchoolTeam
 
 from service.mixins.get_model_by_form_field import GetModelByFormFieldMixin
@@ -17,7 +17,6 @@ from service.mixins.create_object_or_get_none import CreateObjectOrGetNoneMixin
 from service.create_model_object import create_model_object
 from service.send_email_to_client import SendMailToClientMixin
 from service.tokens import account_activation_token
-from service.delete_model_object import delete_model_object
 
 
 class RegistrationView(View, GetModelByFormFieldMixin):
@@ -25,12 +24,14 @@ class RegistrationView(View, GetModelByFormFieldMixin):
     high_school_form = CreateHighSchoolForm()
     guardian_form = CreateGuardianForm()
     team_member_form = CreateTeamMemberForm()
+    recaptcha_form = RecaptchaForm()
 
     def get(self, request):
         return render(request, template_name=self.template_name, context={
             "high_school_form": self.high_school_form,
             "guardian_form": self.guardian_form,
             "team_member_form": self.team_member_form,
+            "recaptcha_form": self.recaptcha_form
         })
 
     def post(self, request):

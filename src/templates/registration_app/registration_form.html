@@ -40,53 +40,61 @@
                             Continue
                         </button>
                     </div>
-                    <hr class="d-none">
                     <div class="container d-flex flex-column d-none">
-                        <div class="text-center"><strong>Guardian form</strong></div>
-                        {% for field in guardian_form %}
-                            <div class="form-group">
-                                {% if field.field.required %}
-                                    {{ field.label_tag }}<i class="text-danger">*</i>
-                                {% else %}
-                                    {{ field.label_tag }}
-                                {% endif %}
-                                {{ field }}
-                                <div data-invalid-div="invalid"></div>
-                            </div>
-                        {% endfor %}
-                        <button class="btn btn-success mt-2" data-action="continue">
+                        <hr>
+                        <div class="container d-flex flex-column">
+                            <div class="text-center"><strong>Guardian form</strong></div>
+                            {% for field in guardian_form %}
+                                <div class="form-group">
+                                    {% if field.field.required %}
+                                        {{ field.label_tag }}<i class="text-danger">*</i>
+                                    {% else %}
+                                        {{ field.label_tag }}
+                                    {% endif %}
+                                    {{ field }}
+                                    <div data-invalid-div="invalid"></div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                         <button class="btn btn-success mt-2" data-action="continue">
                             Continue
-                        </button>
+                         </button>
                     </div>
-                    <hr class="d-none">
-                    <div class="container d-flex flex-column d-none">
-                        <div class="text-center"><strong>Team member1 form</strong></div>
-                        {% for field in team_member_form %}
-                            <div class="form-group">
-                                {% if field.field.required %}
-                                    {{ field.label_tag }}<i class="text-danger">*</i>
-                                {% else %}
-                                    {{ field.label_tag }}
-                                {% endif %}
-                                {{ field }}
-                                {{ field.blank }}
-                                <div data-invalid-div="invalid"></div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                    <hr>
-                    <div class="container bg-light p-3 mt-3 rounded d-none" id="add_container">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                          <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                        </svg>
-                        <button class="btn btn-info" id="team_member" type="submit">
-                            Add person to the team
-                        </button>
-                    </div>
-                    <div class="container d-flex flex-row align-items-center justify-content-center p-2 d-grid gap-2 d-none" id="button">
-                        <button class="btn btn-success" id="submit_button">
-                            Submit
-                        </button>
+                    <div class="d-none">
+                        <hr class="">
+                        <div class="container d-flex flex-column ">
+                            <div class="text-center"><strong>Team member1 form</strong></div>
+                            {% for field in team_member_form %}
+                                <div class="form-group">
+                                    {% if field.field.required %}
+                                        {{ field.label_tag }}<i class="text-danger">*</i>
+                                    {% else %}
+                                        {{ field.label_tag }}
+                                    {% endif %}
+                                    {{ field }}
+                                    <div data-invalid-div="invalid"></div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <hr>
+                        <div class="container bg-light p-3 mt-3 rounded" id="add_container">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                              <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                            </svg>
+                            <button class="btn btn-info" id="team_member" type="submit">
+                                Add person to the team
+                            </button>
+                        </div>
+                        <hr id="recaptcha">
+                        <div class="form-group m-3 p-2">
+                            {{ recaptcha_form.recaptcha }}
+                        </div>
+                        <hr>
+                        <div class="container d-flex flex-row align-items-center justify-content-center p-2 d-grid gap-2" id="button">
+                            <button class="btn btn-success" id="submit_button">
+                                Submit
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>

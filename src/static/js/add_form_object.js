@@ -8,21 +8,9 @@ class InputHandler{
         event.preventDefault();
         if(this.get_errors() || this.get_empty_fields()){ return; }
 
-        this.target.parentElement.removeChild(this.target);
-
-        let sibling = this.getNextSibling(this.target_parent);
-        let next_sibling = this.getNextSibling(sibling);
-
-        sibling.classList.remove("d-none");
-        next_sibling.classList.remove("d-none");
-        next_sibling.scrollIntoView();
-
-        let sec_team_member = this.getNextSibling(next_sibling.nextElementSibling);
-        if(sec_team_member.id === "add_container"){
-            sec_team_member.classList.remove("d-none");
-            this.getNextSibling(sec_team_member).classList.remove("d-none");
-        };
-
+        this.target_parent.nextElementSibling.classList.remove("d-none");
+        this.target_parent.removeChild(event.target);
+        this.target_parent.nextElementSibling.scrollIntoView();
     };
 
     getNextSibling(element){

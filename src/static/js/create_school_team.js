@@ -49,7 +49,7 @@ class SendFormDataHandler{
         let button = document.getElementById("submit_button");
 
         for(let input of inputs){
-            if(input.classList.contains("invalid_field")){
+            if(input.classList.contains("invalid_field") || !input.value){
                 input.scrollIntoView({"behavior": "smooth", "block": "end", "inline": "nearest"});
                 return true;
             }
