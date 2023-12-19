@@ -50,13 +50,17 @@ class CreateTeamMemberHandler{
         div1.append(
             name_form_group, surname_form_group, clause_form_group
         );
-        this.form.insertBefore(div1, document.getElementById("button"));
+        document.getElementById("recaptcha").before(div1);
         div1.scrollIntoView();
     };
 
     createFormGroup(label_name, input_type, input_name){
         let form_group_div = this.createDivTag(["form-group"]);
         let label = this.createLabelTag(label_name);
+        let required = document.createElement("i");
+        required.innerHTML = "*";
+        required.classList.add("text-danger");
+        label.append(required);
         let input = this.createInputTag(input_type, input_name);
 
         input.addEventListener("blur", checkFieldIsEmpty);
