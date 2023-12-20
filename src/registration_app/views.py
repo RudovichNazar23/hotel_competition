@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.views.generic.base import View, TemplateView
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
@@ -8,6 +8,7 @@ from django.utils.encoding import force_str
 
 from .forms import CreateHighSchoolForm, CreateGuardianForm, CreateTeamMemberForm, RecaptchaForm
 from .models import SchoolTeam
+from django.contrib.auth.models import User
 
 from service.mixins.get_model_by_form_field import GetModelByFormFieldMixin
 from service.mixins.get_form_data_or_none_mixin import GetFormDataOrNoneMixin
@@ -108,9 +109,11 @@ class ActivateSchoolTeamView(View):
         except:
             school_team = None
 
+        administrators = User.objects.filter(is_superuser=True)
+
         if school_team is not None and account_activation_token.check_token(school_team, token):
             school_team.is_active = True
             school_team.save()
-            return render(request, "registration_app/success_team_activation.html")
+            return render(request, "registration_app/success_team_activation.html", {"administrators": administrators})
         else:
-            return render(request, "registration_app/error_team_activation.html")
+            return render(request, "registration_app/error_team_activation.html", {"administrators": administrators})
