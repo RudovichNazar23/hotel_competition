@@ -1,10 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-    Your Team has been activated
-</body>
-</html>
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <div class="container m-auto p-auto h4">
+        <p class="mt-3">Gratulacje !!!</p>
+        <p>Dziękujemy za rejestrację drużyny.</p>
+        <p>W razie jakichkolwiek pytań prosimy o kontakt z administratorem</p>
+    </div>
+    <div class="container mt-5 d-flex flex-column">
+        <strong>Dane kontaktowe administratorów</strong>
+        <div class="border border-dark rounded p-3">
+            {% for administrator in administrators %}
+                <div class="container d-flex flex-column">
+                    <strong>{{ administrator.first_name }} {{ administrator.last_name }}</strong>
+                    <div><strong>Email</strong> - {{ administrator.email }}</div>
+                </div>
+                <hr>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+

@@ -86,8 +86,10 @@
                             </button>
                         </div>
                         <hr id="recaptcha">
-                        <div class="form-group m-3 p-2">
-                            {{ recaptcha_form.recaptcha }}
+                        <div id="recaptcha_form" class="border-success">
+                            <div class="form-group m-3 p-2" data-action="False">
+                                {{ recaptcha_form.recaptcha }}
+                            </div>
                         </div>
                         <hr>
                         <div class="container d-flex flex-row align-items-center justify-content-center p-2 d-grid gap-2" id="button">
@@ -111,5 +113,6 @@
     <script src="{% static  'js/validate_file_input.js' %}"></script>
     <script src="{% static 'js/add_form_object.js' %}"></script>
     <script src="{% static 'js/check_field_data.js' %}"></script>
+<!--    <script src="{% static 'js/recaptcha_click.js' %}"></script>-->
     <script src="{% static 'js/create_school_team.js' %}"></script>
 {% endblock %}
