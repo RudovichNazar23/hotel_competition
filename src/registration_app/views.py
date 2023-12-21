@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.base import View, TemplateView
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
@@ -74,7 +74,9 @@ class CreateSchoolTeamView(View, GetFormDataOrNoneMixin, CreateModelObjectMixin,
 
         second_member_data = self.get_form_data_or_none(request_keys=["second_member_name", "second_member_surname"],
                                                         form_keys=self.team_member_form.__dict__["fields"].keys())
-        if high_school_form.is_valid() and guardian_form.is_valid() and first_team_member_form.is_valid():
+        recaptcha = RecaptchaForm(request.POST)
+
+        if high_school_form.is_valid() and guardian_form.is_valid() and first_team_member_form.is_valid() and recaptcha.is_valid():
             high_school_object = high_school_form.save()
             guardian_object = guardian_form.save()
             first_member_object = first_team_member_form.save()
@@ -88,13 +90,15 @@ class CreateSchoolTeamView(View, GetFormDataOrNoneMixin, CreateModelObjectMixin,
                                                      second_member=second_member_object)
 
             if self.send_activation_link(school_team_object, request.POST.get("school_email")):
-                return JsonResponse(
-                    data={"status": 200, "success_url_name": "success_page"}, status=200)
-            else:
-                return JsonResponse(status=200, data={"status": 400, "error_url_name": "error_page"})
+                return redirect("success_page")
         else:
-            return JsonResponse(data={"status": 400, "message": "Form is not valid", "error_url_name": "error_page"},
-                                status=200)
+            return render(request, "registration_app/registration_form.html", {
+                "high_school_form": CreateHighSchoolForm(request.POST or None),
+                "guardian_form": CreateGuardianForm(request.POST or None),
+                "team_member_form": CreateTeamMemberForm(request.POST or None),
+                "recaptcha_form": RecaptchaForm(),
+                "errors": True
+            })
 
 
 class SuccessPageView(TemplateView):

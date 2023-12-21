@@ -14,14 +14,20 @@
 {% block content %}
     <div class="bg-image p-3"
          style="background-image: url('https://pix8.agoda.net/hotelImages/124/1246280/1246280_16061017110043391702.jpg?ca=6&ce=1&s=1024x768'); height: 100%;">
-            <div class="container d-flex flex-row mt-3 p-3 border rounded bg-light">
+            {% if errors %}
+                <div class="container border border-dark rounded bg-light p-3 text-danger">
+                    Recaptcha nie została sprawdzona.<br>
+                    Proszę spróbuj ponownie.
+                </div>
+            {% endif %}
+            <div class="container d-flex flex-row mt-3 p-3 border rounded bg-light" style="z-index: 1;">
                 <img src="../../static/pictures/logo.png" height="200" width="200" class="border">
                 <div class="container text-center">
 
                 </div>
             </div>
             <div class="container border bg-light rounded p-3 mt-3">
-                <form id="registration_form" action="{% url 'create_school_team' %}" method="POST">{% csrf_token %}
+                <form id="registration_form" action="{% url 'create_school_team' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
                     <div class="container d-flex flex-column">
                         <div class="text-center"><strong>High school form</strong></div>
                         <hr>
@@ -86,10 +92,9 @@
                             </button>
                         </div>
                         <hr id="recaptcha">
-                        <div id="recaptcha_form" class="border-success">
-                            <div class="form-group m-3 p-2" data-action="False">
+                        <div id="recaptcha_form" class="">
+                                {{ recaptcha_form.recaptcha.label_tag }}<i class="text-danger">*</i>
                                 {{ recaptcha_form.recaptcha }}
-                            </div>
                         </div>
                         <hr>
                         <div class="container d-flex flex-row align-items-center justify-content-center p-2 d-grid gap-2" id="button">
@@ -113,6 +118,4 @@
     <script src="{% static  'js/validate_file_input.js' %}"></script>
     <script src="{% static 'js/add_form_object.js' %}"></script>
     <script src="{% static 'js/check_field_data.js' %}"></script>
-<!--    <script src="{% static 'js/recaptcha_click.js' %}"></script>-->
-    <script src="{% static 'js/create_school_team.js' %}"></script>
 {% endblock %}
