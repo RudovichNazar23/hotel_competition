@@ -40,4 +40,4 @@ class CreateTeamMemberForm(BaseCreateForm):
 
 
 class RecaptchaForm(forms.Form):
-    recaptcha = ReCaptchaField()
+    recaptcha = ReCaptchaField(required=True)
