@@ -1,17 +1,19 @@
 class CreateTeamMemberHandler{
     constructor(){
         this.form = document.getElementById("registration_form");
-        this.add_container = document.getElementById("add_container");
     };
 
     handleEvent(event){
           event.preventDefault();
-          this.removeAddContainer();
+          this.removeContainer(event.target.parentElement);
           this.build();
+
+          let second_team_member = document.getElementById("second_team_member");
+          second_team_member.append(this.createRemoveButton());
     };
 
-    removeAddContainer(){
-        this.add_container.parentNode.removeChild(this.add_container);
+    removeContainer(container){
+        container.remove();
     };
 
     createLabelTag(labelText){
@@ -40,11 +42,12 @@ class CreateTeamMemberHandler{
 
     build(){
         let div1 = this.createDivTag(["container", "d-flex", "flex-column"]);
-        let head_div = this.createDivTag(["text-center",], "<strong>Team member2 form</strong>");
+        div1.id = "second_team_member";
+        let head_div = this.createDivTag(["text-center",], "<strong>Formularz drugiego członka</strong>");
 
-        let name_form_group = this.createFormGroup("Member Name", "text", "second_member_name");
-        let surname_form_group = this.createFormGroup("Member Surname", "text", "second_member_surname");
-        let clause_form_group = this.createFormGroup("Member Clause", "file", "second_member_clause");
+        let name_form_group = this.createFormGroup("Imie uczęstnika:", "text", "second_member_name");
+        let surname_form_group = this.createFormGroup("Nazwisko uczęstnika:", "text", "second_member_surname");
+        let clause_form_group = this.createFormGroup("Klauzula uczęstnika:", "file", "second_member_clause");
 
         div1.append(head_div);
         div1.append(
@@ -52,6 +55,14 @@ class CreateTeamMemberHandler{
         );
         document.getElementById("recaptcha").before(div1);
         div1.scrollIntoView();
+    };
+
+    createRemoveButton(){
+        let button = document.createElement("button");
+        button.innerHTML = "Usunąć osobę";
+        button.classList.add("bg-danger", "rounded", "mt-2", "p-2");
+        button.addEventListener("click", new RemoveSecondTeamMember());
+        return button
     };
 
     createFormGroup(label_name, input_type, input_name){

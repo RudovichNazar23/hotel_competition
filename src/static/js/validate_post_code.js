@@ -2,7 +2,7 @@ class ValidatePostCodeHandler extends BaseFieldValidatorHandler{
     constructor(){
         super();
         this.valid_regex = /^\d{2}-\d{3}$/;
-        this.error_message = "Incorrect post code";
+        this.error_message = "Nieprawidłowy kod pocztowy";
     }
 };
 

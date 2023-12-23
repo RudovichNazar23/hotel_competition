@@ -46,7 +46,7 @@ class RegistrationView(View, GetModelByFormFieldMixin):
             return JsonResponse(
                 data={
                     "status": 400,
-                    "message": "Object with this data already exists"
+                    "message": "Takie dane już istnieją"
                 },
                 status=200
             )
