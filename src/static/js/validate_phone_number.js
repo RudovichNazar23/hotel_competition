@@ -2,7 +2,7 @@ class ValidatePhoneNumberHandler extends BaseFieldValidatorHandler{
     constructor(){
         super();
         this.valid_regex = /^\+48[0-9]{9}$/;
-        this.error_message = "Incorrect phone number";
+        this.error_message = "Nieprawidłowy numer telefonu";
     }
 };
 

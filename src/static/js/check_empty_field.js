@@ -8,7 +8,7 @@ function checkFieldIsEmpty(event){
     if(!input.value){
         input.classList.remove("success_field");
         AddFieldAttributes(input, ["invalid_field",]);
-        AddFieldAttributes(input.nextElementSibling, ["p-2", "m-2", "text-danger"],  "This field is empty");
+        AddFieldAttributes(input.nextElementSibling, ["p-2", "m-2", "text-danger"],  "To pole jest puste");
     }
 };
 

@@ -17,7 +17,7 @@ class CheckFileIsEmptyHandler extends BaseFileFieldHandler {
 
         if(file_size <= 0){
             AddFieldAttributes(event.target, ["invalid_field",]);
-            AddFieldAttributes(event.target.nextElementSibling, ["p-2", "m-2", "text-danger"],  "This file is empty");
+            AddFieldAttributes(event.target.nextElementSibling, ["p-2", "m-2", "text-danger"],  "Ten plik jest pusty");
         }
     }
 }
@@ -29,7 +29,7 @@ class CheckFileSizeHandler extends BaseFileFieldHandler {
 
          if(file_size > max_size){
             AddFieldAttributes(event.target, ["invalid_field",]);
-            AddFieldAttributes(event.target.nextElementSibling, ["p-2", "m-2", "text-danger"],  "This file is too big");
+            AddFieldAttributes(event.target.nextElementSibling, ["p-2", "m-2", "text-danger"],  "Ten plik jest za duży");
          }
     }
 }
@@ -41,7 +41,7 @@ class CheckFileFormatHandler extends BaseFileFieldHandler {
 
         if(!allowed_file_formats.includes(file_format)){
             AddFieldAttributes(event.target, ["invalid_field",]);
-            AddFieldAttributes(event.target.nextElementSibling, ["p-2", "m-2", "text-danger"],  "Format is not allowed");
+            AddFieldAttributes(event.target.nextElementSibling, ["p-2", "m-2", "text-danger"],  "Format pliku nie jest dozwolony");
         }
     }
 }

@@ -29,7 +29,7 @@
             <div class="container border bg-light rounded p-3 mt-3">
                 <form id="registration_form" action="{% url 'create_school_team' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
                     <div class="container d-flex flex-column">
-                        <div class="text-center"><strong>High school form</strong></div>
+                        <div class="text-center"><strong>Formularz szkoły</strong></div>
                         <hr>
                         {% for field in high_school_form %}
                             <div class="form-group">
@@ -43,13 +43,13 @@
                             </div>
                         {% endfor %}
                         <button class="btn btn-success mt-2" data-action="continue">
-                            Continue
+                            Dalej
                         </button>
                     </div>
                     <div class="container d-flex flex-column d-none">
                         <hr>
                         <div class="container d-flex flex-column">
-                            <div class="text-center"><strong>Guardian form</strong></div>
+                            <div class="text-center"><strong>Formularz opiekuna</strong></div>
                             {% for field in guardian_form %}
                                 <div class="form-group">
                                     {% if field.field.required %}
@@ -63,13 +63,13 @@
                             {% endfor %}
                         </div>
                          <button class="btn btn-success mt-2" data-action="continue">
-                            Continue
+                            Dalej
                          </button>
                     </div>
                     <div class="d-none">
                         <hr class="">
                         <div class="container d-flex flex-column ">
-                            <div class="text-center"><strong>Team member1 form</strong></div>
+                            <div class="text-center"><strong>Formularz pierwszego członka</strong></div>
                             {% for field in team_member_form %}
                                 <div class="form-group">
                                     {% if field.field.required %}
@@ -82,13 +82,10 @@
                                 </div>
                             {% endfor %}
                         </div>
-                        <hr>
+                        <hr id="hr">
                         <div class="container bg-light p-3 mt-3 rounded" id="add_container">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                              <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                            </svg>
                             <button class="btn btn-info" id="team_member" type="submit">
-                                Add person to the team
+                                Dodać osobę do zespołu
                             </button>
                         </div>
                         <hr id="recaptcha">
@@ -99,7 +96,7 @@
                         <hr>
                         <div class="container d-flex flex-row align-items-center justify-content-center p-2 d-grid gap-2" id="button">
                             <button class="btn btn-success" id="submit_button">
-                                Submit
+                                Wysłać
                             </button>
                         </div>
                     </div>
@@ -110,6 +107,7 @@
             crossorigin="anonymous"></script>
     <script src="{% static 'js/getCookie.js' %}"></script>
     <script src="{% static 'js/check_empty_field.js' %}"></script>
+    <script src="{% static 'js/remove_team_member.js' %}"></script>
     <script src="{% static 'js/add_team_member.js' %}"></script>
     <script src="{% static 'js/base_field_validator.js' %}"></script>
     <script src="{% static 'js/validate_email.js' %}"></script>

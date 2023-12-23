@@ -2,7 +2,7 @@ class ValidateEmailHandler extends BaseFieldValidatorHandler{
     constructor(){
         super();
         this.valid_regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-        this.error_message = "Incorrect email address";
+        this.error_message = "Nieprawidłowy adres e-mail";
     };
 };
 
