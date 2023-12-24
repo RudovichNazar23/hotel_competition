@@ -115,23 +115,22 @@ class TestCreateSchoolTeamView(TestCase):
 
     def test_correct_data_saving_with_one_member(self):
         response = self.client.post(path=self.url, data=self.form_correct_data_with_one_member)
-        self.assertIn("status", response.json())
-        self.assertIn("message", response.json())
-        self.assertEquals(response.json()["status"], 200)
+
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(response.url, "/registration/success_page")
 
         print({self.__class__.__name__: "Tests if correct form data has been saved correctly only with one member", "result": "Successfully"})
 
     def test_correct_data_saving_with_two_members(self):
         response = self.client.post(path=self.url, data=self.form_correct_data_with_two_members)
 
-        self.assertIn("status", response.json())
-        self.assertIn("message", response.json())
-        self.assertEquals(response.json()["status"], 200)
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(response.url, "/registration/success_page")
 
         print({self.__class__.__name__: "Tests if correct form data has been saved correctly with two members", "result": "Successfully"})
 
     def test_incorrect_data_saving(self):
         response = self.client.post(path=self.url, data=self.form_incorrect_data)
-        self.assertEquals(response.json()["status"], 400)
+        self.assertEquals(response.status_code, 200)
 
         print({self.__class__.__name__: "Tests if incorrect form data wasn't saved", "result": "Successfully"})
