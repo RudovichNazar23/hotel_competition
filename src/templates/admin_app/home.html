@@ -1,12 +1,19 @@
-{% extends 'base.html' %}
+{% extends 'admin_nav_bar.html' %}
 {% block title %}
     Admin page
 {% endblock %}
 
-{% block content %}
-    <center>
-        <h3>
-            Admin page is being built.
-        </h3>
-    </center>
+{% block data_content %}
+    <div class="d-flex flex-column">
+        <div class="d-flex flex-column border border-dark rounded p-3 mt-2">
+            <div class="container d-flex flex-row p-2 justify-content-between">
+                <button class="btn btn-light">
+                    Eksportować do pdf pliku
+                </button>
+                <button class="btn btn-light">
+                    Eksportować do csv pliku
+                </button>
+            </div>
+        </div>
+    </div>
 {% endblock %}
