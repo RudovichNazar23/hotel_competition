@@ -1,0 +1,32 @@
+{% extends 'admin_nav_bar.html' %}
+{% block title %}
+    Admin page
+{% endblock %}
+
+{% block data_content %}
+        {% if not activated_school_teams %}
+            <div class="d-flex align-items-center justify-content-center mt-5">
+                <h3>Na razie nie ma żadnych zarejestrowanych  zespołów...</h3>
+            </div>
+        {% else %}
+            <div class="d-flex flex-column">
+                <div class="d-flex flex-column border border-dark rounded p-3 mt-2">
+                    <div class="container d-flex flex-row p-2 justify-content-between">
+                        <button class="btn btn-light">
+                            Eksportować do pdf pliku
+                        </button>
+                        <button class="btn btn-light">
+                            Eksportować do csv pliku
+                        </button>
+                    </div>
+                </div>
+                <div class="d-flex flex-column align-items-center p-2 mt-2">
+                    {% for activated_school_team in  activated_school_teams%}
+                        <div class="p-2">
+                            {{ activated_school_team }}
+                        </div>
+                    {% endfor %}
+               </div>
+            </div>
+        {% endif %}
+{% endblock %}
