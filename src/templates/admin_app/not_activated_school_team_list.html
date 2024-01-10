@@ -1,0 +1,18 @@
+{% extends 'admin_nav_bar.html' %}
+
+
+{% block data_content %}
+    {% if not not_activated_school_teams %}
+        <div class="d-flex align-items-center justify-content-center mt-5">
+            <h3>Na razie nie ma unieaktywnionych zespołów...</h3>
+        </div>
+    {% else %}
+        <div class="d-flex flex-column align-items-center justify-content-center p-2 m-2">
+            {% for team in not_activated_school_teams %}
+                <div class="p-2 m-2">
+                    {{ team }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}

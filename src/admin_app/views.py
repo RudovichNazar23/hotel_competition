@@ -13,5 +13,6 @@ class ActivatedSchoolTeamListView(ListView):
 
 
 class NotActivatedSchoolTeamListView(ListView):
-    template_name = ""
-    context_object_name = ""
+    template_name = "admin_app/not_activated_school_team_list.html"
+    context_object_name = "not_activated_school_teams"
+    queryset = get_filtered_model_queryset(model=SchoolTeam, is_active=False)
