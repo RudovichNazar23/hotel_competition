@@ -1,4 +1,5 @@
 {% extends 'admin_nav_bar.html' %}
+{% load static %}
 {% block title %}
     Admin page
 {% endblock %}
@@ -9,24 +10,46 @@
                 <h3>Na razie nie ma żadnych zarejestrowanych  zespołów...</h3>
             </div>
         {% else %}
-            <div class="d-flex flex-column">
-                <div class="d-flex flex-column border border-dark rounded p-3 mt-2">
-                    <div class="container d-flex flex-row p-2 justify-content-between">
-                        <button class="btn btn-light">
-                            Eksportować do pdf pliku
-                        </button>
-                        <button class="btn btn-light">
-                            Eksportować do csv pliku
-                        </button>
+            <form action="{% url 'create_pdf_file' %}" method="POST" class="d-flex flex-column m-1 p-5 align-items-center" enctype="multipart/form-data">{% csrf_token %}
+                <div class="d-flex flex-column" style="width: 500px;">
+                    <div class="d-flex flex-column border border-dark rounded p-3 mt-2">
+                        <div class="container d-flex flex-row p-2 justify-content-between">
+                            <button class="btn btn-light" type="submit" name="create_pdf_file" id="pdf">
+                                Eksportować do pdf pliku
+                            </button>
+                            <button class="btn btn-light" type="submit" name="create_csv_file">
+                                Eksportować do csv pliku
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <div class="d-flex flex-column align-items-center p-2 mt-2">
-                    {% for activated_school_team in  activated_school_teams%}
-                        <div class="p-2">
-                            {{ activated_school_team }}
-                        </div>
-                    {% endfor %}
-               </div>
-            </div>
+                    <ul class="list-group mt-3" style="width: 500px;">
+                        <li class="list-group-item text-center"><strong>Dane szkoły</strong></li>
+                        {% for high_school_field in high_school_fields %}
+                            <li class="list-group-item d-flex flex-row justify-content-between p-2">
+                                <strong>{{ high_school_field.verbose_name }}</strong>
+                                <input type="checkbox" name="{{ high_school_field.name }}" value="{{ high_school_field.verbose_name }}">
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <ul class="list-group mt-3" style="width: 500px;">
+                        <li class="list-group-item text-center"><strong>Dane opiekuna</strong></li>
+                        {% for guardian_field in guardian_fields %}
+                            <li class="list-group-item d-flex flex-row justify-content-between p-2">
+                                <strong>{{ guardian_field.verbose_name }}</strong>
+                                <input type="checkbox" name="{{ guardian_field.name }}" value="{{ guardian_field.verbose_name }}">
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <ul class="list-group mt-3" style="width: 500px;">
+                        <li class="list-group-item text-center"><strong>Dane uczęstnika</strong></li>
+                        {% for team_member_field in team_member_fields %}
+                            <li class="list-group-item d-flex flex-row justify-content-between p-2">
+                                <strong>{{ team_member_field.verbose_name }}</strong>
+                                <input type="checkbox" name="{{ team_member_field.name }}" value="{{ team_member_field.verbose_name }}">
+                            </li>
+                        {% endfor %}
+                    </ul>
+            </form>
         {% endif %}
 {% endblock %}

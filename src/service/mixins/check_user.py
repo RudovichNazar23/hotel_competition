@@ -6,4 +6,4 @@ class CheckUserMixin:
         if self.request.user.is_anonymous:
             return redirect(to="registration/form")
         else:
-            return redirect(to="administrator/activated_school_teams")
+            return redirect(to="administrator/models_field_list")
