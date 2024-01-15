@@ -7,12 +7,29 @@
             <h3>Na razie nie ma unieaktywnionych zespołów...</h3>
         </div>
     {% else %}
-        <div class="d-flex flex-column align-items-center justify-content-center p-2 m-2">
-            {% for team in not_activated_school_teams %}
-                <div class="p-2 m-2">
-                    {{ team }}
-                </div>
-            {% endfor %}
+        <div class="container mt-5">
+            <table class="table m-2 p-2">
+                <tr>
+                    {% for field in model_fields %}
+                        <th scope="row" class="border rounded p-2 text-center">{{ field.verbose_name }}</th>
+                    {% endfor %}
+                </tr>
+                <tbody>
+                    {% for school in not_activated_school_teams %}
+                        <tr>
+                            <td scope="col" class="text-center border"><a href="{% url 'school_detail' school.high_school.pk %}">{{ school.high_school }}</a></td>
+                            <td scope="col" class="text-center border"><a href="{% url 'guardian_detail' school.guardian.pk %}">{{ school.guardian }}</a></td>
+                            <td scope="col" class="text-center border"><a href="{% url 'team_member_detail' school.first_member.pk %}">{{ school.first_member }}</a></td>
+                            {% if not school.second_member %}
+                                <th scope="col" class="text-center border">Brak</th>
+                            {% else %}
+                                <td scope="col" class="text-center border">{{ school.second_member }}</td>
+                            {% endif %}
+                            <th scope="col" class="text-center border">Nie</th>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     {% endif %}
 {% endblock %}

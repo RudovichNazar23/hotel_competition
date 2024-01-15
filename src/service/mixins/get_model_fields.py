@@ -1,6 +1,6 @@
 
 def get_model_fields(model, context_name=None):
-    fields = filter(lambda x: x.verbose_name != "ID", [field for field in model._meta.fields])
+    fields = [*filter(lambda x: x.verbose_name != "ID", [field for field in model._meta.fields])]
 
     model_fields = {}
 
