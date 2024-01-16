@@ -1,9 +1,58 @@
-{% extends 'base.html' %}
+{% extends 'base_object_detail_template.html' %}
 
 {% block title %}
 
 {% endblock %}
 
-{% block content %}
-    {{ guardian.guardian_name }}
+{% block page_header %} Dane {{ guardian.guardian_name }}  {% endblock %}
+
+{% block main_content %}
+    <div class="m-auto mt-5" style="width: 650px;">
+        <div class="d-flex flex-row justify-content-between border rounded p-3">
+            <div class="text-center"><strong>Imię</strong></div>
+            <div class="text-center">{{ guardian.guardian_name }}</div>
+        </div>
+        <div class="d-flex flex-row justify-content-between border rounded p-3 mt-2">
+            <div class="text-center"><strong>Nazwisko</strong></div>
+            <div class="text-center">{{ guardian.guardian_surname }}</div>
+        </div>
+        <div class="d-flex flex-row justify-content-between border rounded p-3 mt-2">
+            <div class="text-center"><strong>Telefon komórkowy</strong></div>
+            <div class="text-center">{{ guardian.guardian_mobile_phone }}</div>
+        </div>
+        <div class="d-flex flex-row justify-content-between border rounded p-3 mt-2">
+            <div class="text-center"><strong>E-mail</strong></div>
+            <div class="text-center">{{ guardian.guardian_email }}</div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block additional_information %}
+    <div class="container d-flex flex-column align-items-center mt-5 border rounded p-3" style="width: 650px;">
+        <div class="d-flex flex-row align-items-center justify-content-center mt-2">
+            <h4>Pozostałe dane</h4>
+        </div>
+        <hr class="container">
+        <div class="d-flex flex-row justify-content-between p-3">
+            <div class="text-center p-2"><strong>Szkoła</strong></div>
+            <div class="text-center p-2"><a href="{% url 'school_detail' guardian_school_team.high_school.pk %}">{{ guardian_school_team.high_school }}</a></div>
+        </div>
+        <div class="d-flex flex-column">
+            <div class="">
+                <h5 class="text-center">Osoby których opiekuje</h5>
+            </div>
+            <div class="d-flex flex-column">
+                <div class="d-flex flex-row justify-content-between p-3">
+                    <div class="text-center p-2"><strong>Imię i nazwisko</strong></div>
+                    <div class="text-center p-2"><a href="{% url 'team_member_detail' guardian_school_team.first_member.pk %}">{{ guardian_school_team.first_member }}</a></div>
+                </div>
+                {% if guardian_school_team.second_member %}
+                    <div class="d-flex flex-row justify-content-between p-3">
+                        <div class="text-center p-2"><strong>Imię i nazwisko</strong></div>
+                        <div class="text-center p-2"><a href="{% url 'team_member_detail' guardian_school_team.second_member.pk %}">{{ guardian_school_team.second_member }}</a></div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 {% endblock %}

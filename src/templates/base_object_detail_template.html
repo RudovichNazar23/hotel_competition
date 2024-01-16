@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mt-2 p-2">
+          <a class="navbar-brand" href="{% url 'not_activated_school_teams' %}">Powrót</a>
+          <div class="collapse navbar-collapse d-flex flex-column" id="navbarNav">
+                <ul class="navbar-nav">
+                      <li class="nav-item active" style="font-size: 24px;">
+                          <strong>{% block page_header %}  {% endblock %}</strong>
+                      </li>
+                </ul>
+          </div>
+    </nav>
+    {% block main_content %}
+
+    {% endblock %}
+
+
+    {% block additional_information %}
+
+    {% endblock %}
+{% endblock %}
+

@@ -7,6 +7,7 @@ from registration_app.models import HighSchool, Guardian, TeamMember, SchoolTeam
 
 from service.get_filtered_model_queryset import get_filtered_model_queryset
 from service.mixins.get_model_fields import get_model_fields
+from service.get_model_object import get_model_object
 
 
 class ModelsFieldListView(ListView):
@@ -48,6 +49,11 @@ class GuardianDetailView(DetailView):
     model = Guardian
     template_name = "admin_app/guardian_detail.html"
     context_object_name = "guardian"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["guardian_school_team"] = get_model_object(model=SchoolTeam, guardian=self.get_object())
+        return context
 
 
 class TeamMemberDetailView(DetailView):
