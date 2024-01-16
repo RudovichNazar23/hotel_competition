@@ -23,7 +23,7 @@
                             {% if not school.second_member %}
                                 <th scope="col" class="text-center border">Brak</th>
                             {% else %}
-                                <td scope="col" class="text-center border">{{ school.second_member }}</td>
+                                <td scope="col" class="text-center border"><a href="{% url 'team_member_detail' school.second_member.pk %}">{{ school.second_member }}</a></td>
                             {% endif %}
                             <th scope="col" class="text-center border">Nie</th>
                         </tr>
