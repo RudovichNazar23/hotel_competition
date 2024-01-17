@@ -44,6 +44,11 @@ class SchoolDetailView(DetailView):
     template_name = "admin_app/school_detail.html"
     context_object_name = "school"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["school_team"] = get_model_object(model=SchoolTeam, high_school=self.get_object())
+        return context
+
 
 class GuardianDetailView(DetailView):
     model = Guardian
