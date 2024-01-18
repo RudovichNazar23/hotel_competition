@@ -23,4 +23,33 @@
 
 
 {% block additional_information %}
+    <div class="container d-flex flex-column align-items-center mt-5 border rounded p-3" style="width: 650px;">
+        <div class="d-flex flex-row align-items-center justify-content-center mt-2">
+            <h4>Pozostałe dane ucznia</h4>
+        </div>
+        <hr class="container">
+            <div class="d-flex flex-column">
+                <div class="d-flex flex-row justify-content-between p-3">
+                    <div class="text-center p-2"><strong>Szkoła</strong></div>
+                    <div class="text-center p-2"><a href="{% url 'school_detail' team_member_school_team.high_school.pk %}">{{ team_member_school_team.high_school }}</a></div>
+                </div>
+                <div class="d-flex flex-row justify-content-between p-3">
+                    <div class="text-center p-2"><strong>Opiekun</strong></div>
+                    <div class="text-center p-2"><a href="{% url 'guardian_detail' team_member_school_team.guardian.pk %}">{{ team_member_school_team.guardian }}</a></div>
+                </div>
+                {% if team_member == team_member_school_team.first_member %}
+                    {% if team_member_school_team.second_member %}
+                        <div class="d-flex flex-row justify-content-between p-3">
+                            <div class="text-center p-2"><strong>Drugi członek drużyny</strong></div>
+                            <div class="text-center p-2"><a href="{% url 'guardian_detail' team_member_school_team.guardian.pk %}">{{ team_member_school_team.second_member }}</a></div>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <div class="d-flex flex-row justify-content-between p-3">
+                        <div class="text-center p-2"><strong>Drugi członek drużyny</strong></div>
+                        <div class="text-center p-2"><a href="{% url 'guardian_detail' team_member_school_team.guardian.pk %}">{{ team_member_school_team.first_member }}</a></div>
+                    </div>
+                {% endif %}
+            </div>
+    </div>
 {% endblock %}
