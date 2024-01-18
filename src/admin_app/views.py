@@ -66,3 +66,11 @@ class TeamMemberDetailView(DetailView):
     template_name = "admin_app/team_member_detail.html"
     context_object_name = "team_member"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        first_member = get_model_object(model=SchoolTeam, first_member=self.get_object())
+        second_member = get_model_object(model=SchoolTeam, second_member=self.get_object())
+        context["team_member_school_team"] = first_member if first_member is not None else second_member
+        return context
+
+
