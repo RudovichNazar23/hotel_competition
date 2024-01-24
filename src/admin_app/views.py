@@ -1,13 +1,16 @@
+from django.http import HttpResponse
 from django.views.generic.list import ListView
 from django.views import View
 from django.views.generic.detail import DetailView
 
+import csv
 
 from registration_app.models import HighSchool, Guardian, TeamMember, SchoolTeam
 
 from service.get_filtered_model_queryset import get_filtered_model_queryset
 from service.mixins.get_model_fields import get_model_fields
 from service.get_model_object import get_model_object
+from service.mixins.test_mixin import TestMixin
 
 
 class ModelsFieldListView(ListView):
@@ -22,12 +25,29 @@ class ModelsFieldListView(ListView):
 
 
 class CreatePdfFileView(View):
-    def post(self, request):
-        pass
-
-
-class CreateCsvFileView(View):
     pass
+
+
+class CreateCsvFileView(View, TestMixin):
+    def post(self, request):
+        response = HttpResponse(content_type="text/csv")
+        response["Content-Disposition"] = "attachment; file_name=Test.csv"
+
+        writer = csv.writer(response)
+        writer.writerow([*filter(lambda x: x, [*request.POST.values()][1:])])
+
+        fields = [*filter(lambda x: x, [*request.POST.keys()][1:])]
+
+        high_school_data = self.get_model_value_list(obj=self.get_model_fields(model=HighSchool, fields=fields))
+        guardian_data = self.get_model_value_list(obj=self.get_model_fields(model=Guardian, fields=fields))
+        team_member_data = self.get_model_value_list(obj=self.get_model_fields(model=TeamMember, fields=fields))
+
+        data = self.create_data_rows(high_school_data, guardian_data, team_member_data)
+
+        for row in data:
+            writer.writerow(row)
+
+        return response
 
 
 class NotActivatedSchoolTeamListView(ListView):
@@ -72,5 +92,3 @@ class TeamMemberDetailView(DetailView):
         second_member = get_model_object(model=SchoolTeam, second_member=self.get_object())
         context["team_member_school_team"] = first_member if first_member is not None else second_member
         return context
-
-
