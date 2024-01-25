@@ -1,9 +1,10 @@
+import csv
+
 from django.http import HttpResponse
+from django.shortcuts import redirect
 from django.views.generic.list import ListView
 from django.views import View
 from django.views.generic.detail import DetailView
-
-import csv
 
 from registration_app.models import HighSchool, Guardian, TeamMember, SchoolTeam
 
@@ -38,11 +39,8 @@ class CreateCsvFileView(View, TestMixin):
 
         fields = [*filter(lambda x: x, [*request.POST.keys()][1:])]
 
-        high_school_data = self.get_model_value_list(obj=self.get_model_fields(model=HighSchool, fields=fields))
-        guardian_data = self.get_model_value_list(obj=self.get_model_fields(model=Guardian, fields=fields))
-        team_member_data = self.get_model_value_list(obj=self.get_model_fields(model=TeamMember, fields=fields))
-
-        data = self.create_data_rows(high_school_data, guardian_data, team_member_data)
+        data = self.create_data_rows(queryset_object=get_filtered_model_queryset(model=SchoolTeam, is_active=True),
+                                     fields=fields)
 
         for row in data:
             writer.writerow(row)
