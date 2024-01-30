@@ -1,7 +1,7 @@
 import csv
 
 
-class WriteToCsvFile:
+class CsvWriter:
     def __init__(self, response_object, headers: list, data):
         self.response = response_object
         self.headers = headers
