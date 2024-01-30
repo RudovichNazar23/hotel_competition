@@ -154,4 +154,5 @@ xdg==5
 xkit==0.0.0
 zipp==1.0.0
 django-recaptcha==3.0.0
-six==1.16.0
+six==1.16.0reportlab==4.0.9
+weasyprint==60.2
