@@ -1,7 +1,6 @@
-import csv
+from django.template.loader import render_to_string
 
 from django.http import HttpResponse
-from django.shortcuts import redirect
 from django.views.generic.list import ListView
 from django.views import View
 from django.views.generic.detail import DetailView
@@ -11,7 +10,9 @@ from registration_app.models import HighSchool, Guardian, TeamMember, SchoolTeam
 from service.get_filtered_model_queryset import get_filtered_model_queryset
 from service.mixins.get_model_fields import get_model_fields
 from service.get_model_object import get_model_object
-from service.mixins.test_mixin import TestMixin
+from service.mixins.csv_serializer_mixin import CsvSerializerMixin
+from service.mixins.write_to_csv_file import WriteToCsvFile
+from service.mixins.pdf_writer import PdfWriter
 
 
 class ModelsFieldListView(ListView):
@@ -25,25 +26,40 @@ class ModelsFieldListView(ListView):
     queryset = get_filtered_model_queryset(model=SchoolTeam, is_active=True)
 
 
-class CreatePdfFileView(View):
-    pass
-
-
-class CreateCsvFileView(View, TestMixin):
+class CreatePdfFileView(View, CsvSerializerMixin):
     def post(self, request):
-        response = HttpResponse(content_type="text/csv")
-        response["Content-Disposition"] = "attachment; file_name=Test.csv"
+        response = HttpResponse(content_type="application/pdf")
+        response["Content-Disposition"] = "attachment; filename=test.pdf"
+        response["Content-Transfer-Encoding"] = "binary"
 
-        writer = csv.writer(response)
-        writer.writerow([*filter(lambda x: x, [*request.POST.values()][1:])])
+        headers = [*filter(lambda x: x, [*request.POST.values()][1:])]
 
         fields = [*filter(lambda x: x, [*request.POST.keys()][1:])]
 
         data = self.create_data_rows(queryset_object=get_filtered_model_queryset(model=SchoolTeam, is_active=True),
                                      fields=fields)
 
-        for row in data:
-            writer.writerow(row)
+        html_string = render_to_string(template_name="admin_app/pdf_output.html", context={"headers": headers, "data": data})
+
+        pdf_writer = PdfWriter(html_string=html_string, response_object=response)
+        pdf_writer.write_data()
+
+        return response
+
+
+class CreateCsvFileView(View, CsvSerializerMixin):
+    def post(self, request):
+        response = HttpResponse(content_type="text/csv")
+        response["Content-Disposition"] = "attachment; file_name=Test.csv"
+
+        headers = [*filter(lambda x: x, [*request.POST.values()][1:])]
+        fields = [*filter(lambda x: x, [*request.POST.keys()][1:])]
+
+        data = self.create_data_rows(queryset_object=get_filtered_model_queryset(model=SchoolTeam, is_active=True),
+                                     fields=fields)
+
+        writer = WriteToCsvFile(response_object=response, headers=headers, data=data)
+        writer.write_rows()
 
         return response
 
