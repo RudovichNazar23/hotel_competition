@@ -6,7 +6,8 @@ from .views import (
     CreateCsvFileView,
     SchoolDetailView,
     GuardianDetailView,
-    TeamMemberDetailView
+    TeamMemberDetailView,
+    OpenRegistrationView
 )
 
 urlpatterns = [
@@ -16,5 +17,6 @@ urlpatterns = [
     path("create_csv_file", CreateCsvFileView.as_view(), name="create_csv_file"),
     path("school_detail/<int:pk>", SchoolDetailView.as_view(), name="school_detail"),
     path("guardian_detail/<int:pk>", GuardianDetailView.as_view(), name="guardian_detail"),
-    path("team_member_detail/<int:pk>", TeamMemberDetailView.as_view(), name="team_member_detail")
+    path("team_member_detail/<int:pk>", TeamMemberDetailView.as_view(), name="team_member_detail"),
+    path("open_registration", OpenRegistrationView.as_view(), name="open_registration")
 ]

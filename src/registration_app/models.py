@@ -3,6 +3,9 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 class HighSchool(models.Model):
+    class Meta:
+        verbose_name_plural = "Szkoły"
+
     full_name = models.CharField(max_length=255, blank=False, unique=True, verbose_name="Pełna nazwa szkoły")
     short_name = models.CharField(max_length=255, blank=True, verbose_name="Nazwa w skrócie")
     city = models.CharField(max_length=255, verbose_name="Miasto")
@@ -16,6 +19,9 @@ class HighSchool(models.Model):
 
 
 class Guardian(models.Model):
+    class Meta:
+        verbose_name_plural = "Opiekunowie"
+
     guardian_name = models.CharField(max_length=255, verbose_name="Imie opiekuna")
     guardian_surname = models.CharField(max_length=255, verbose_name="Nazwisko opiekuna")
     guardian_mobile_phone = PhoneNumberField(region="PL", blank=False, unique=True, verbose_name="Telefon komórkowy opiekuna")
@@ -27,6 +33,9 @@ class Guardian(models.Model):
 
 
 class TeamMember(models.Model):
+    class Meta:
+        verbose_name_plural = "Uczniowie"
+
     member_name = models.CharField(max_length=255, verbose_name="Imie uczęstnika")
     member_surname = models.CharField(max_length=255, verbose_name="Nazwisko uczęstnika")
     member_clause = models.FileField(upload_to="clauses/", blank=False, verbose_name="Klauzula uczęstnika")
@@ -36,6 +45,9 @@ class TeamMember(models.Model):
 
 
 class SchoolTeam(models.Model):
+    class Meta:
+        verbose_name_plural = "Zespoły szkolne"
+
     high_school = models.ForeignKey(HighSchool, on_delete=models.CASCADE, related_name="school", verbose_name="Nazwa szkoły")
     guardian = models.ForeignKey(Guardian, on_delete=models.CASCADE, verbose_name="Opiekun")
     first_member = models.ForeignKey(TeamMember, on_delete=models.CASCADE, related_name="first_member", verbose_name="Pierwszy uczęstnik")

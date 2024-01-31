@@ -1,11 +1,15 @@
 from django.template.loader import render_to_string
-
 from django.http import HttpResponse
+
 from django.views.generic.list import ListView
 from django.views import View
 from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView
+
+from .forms import OpenRegistrationForm
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 
 from registration_app.models import HighSchool, Guardian, TeamMember, SchoolTeam
 
@@ -16,6 +20,7 @@ from service.mixins.csv_serializer_mixin import CsvSerializerMixin
 from service.mixins.csv_writer import CsvWriter
 from service.mixins.pdf_writer import PdfWriter
 from service.mixins.get_request_data import RequestObjectDataMixin
+from service.mixins.add_header_mixin import HeaderMixin
 
 
 class ModelsFieldListView(LoginRequiredMixin, ListView):
@@ -48,12 +53,14 @@ class CreatePdfFileView(LoginRequiredMixin, View, CsvSerializerMixin, RequestObj
         return response
 
 
-class CreateCsvFileView(LoginRequiredMixin, View, CsvSerializerMixin, RequestObjectDataMixin):
+class CreateCsvFileView(LoginRequiredMixin, View, CsvSerializerMixin, RequestObjectDataMixin, HeaderMixin):
     def post(self, request):
         response = HttpResponse(content_type="text/csv")
         response["Content-Disposition"] = "attachment; file_name=Test.csv"
 
         headers = self.get_form_request_values()
+        self.add_header(header_list=headers)
+
         fields = self.get_form_request_keys()
 
         data = self.create_data_rows(queryset_object=get_filtered_model_queryset(model=SchoolTeam, is_active=True),
@@ -107,3 +114,10 @@ class TeamMemberDetailView(LoginRequiredMixin, DetailView):
         second_member = get_model_object(model=SchoolTeam, second_member=self.get_object())
         context["team_member_school_team"] = first_member if first_member is not None else second_member
         return context
+
+
+class OpenRegistrationView(SuccessMessageMixin, CreateView):
+    template_name = "admin_app/open_registration.html"
+    form_class = OpenRegistrationForm
+    success_url = "open_registration"
+    success_message = "Operacja zakończyła się pomyślnie"
