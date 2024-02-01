@@ -14,18 +14,21 @@ from service.mixins.get_model_by_form_field import GetModelByFormFieldMixin
 from service.mixins.get_form_data_or_none_mixin import GetFormDataOrNoneMixin
 from service.mixins.create_model_object_mixin import CreateModelObjectMixin
 from service.mixins.create_object_or_get_none import CreateObjectOrGetNoneMixin
+from service.mixins.check_opened_registration import CheckOpenedRegistrationMixin
 
 from service.create_model_object import create_model_object
 from service.send_email_to_client import SendMailToClientMixin
 from service.tokens import account_activation_token
 
 
-class RegistrationView(View, GetModelByFormFieldMixin):
+class RegistrationView(CheckOpenedRegistrationMixin, View, GetModelByFormFieldMixin):
     template_name = "registration_app/registration_form.html"
     high_school_form = CreateHighSchoolForm()
     guardian_form = CreateGuardianForm()
     team_member_form = CreateTeamMemberForm()
     recaptcha_form = RecaptchaForm()
+
+    error_template_name = "admin_app/registration_is_not_activated.html"
 
     def get(self, request):
         return render(request, template_name=self.template_name, context={
