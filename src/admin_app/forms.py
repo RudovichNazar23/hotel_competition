@@ -10,6 +10,6 @@ class OpenRegistrationForm(forms.ModelForm):
 
         widgets = {
             "date": forms.SelectDateWidget(attrs={"type": "date", "class": "form-control"}),
-            "time_from": forms.TimeInput(attrs={"type": "time", "class": "form-control"},),
-            "time_to": forms.TimeInput(attrs={"type": "time", "class": "form-control"})
+            "time_from": forms.TimeInput(attrs={"class": "form-control"},),
+            "time_to": forms.TimeInput(attrs={"class": "form-control"})
         }
