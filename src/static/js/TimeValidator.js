@@ -4,6 +4,7 @@ function TimeValidator(event){
     let nextSibling = event.target.nextElementSibling;
 
     if(!event.target.value){
+        event.target.classList.add("border-danger");
         nextSibling.innerHTML = "Pole jest puste",
         nextSibling.classList.add("p-2", "m-1", "text-danger");
     }
