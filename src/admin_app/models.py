@@ -6,7 +6,7 @@ class OpenRegistration(models.Model):
         verbose_name_plural = "Otwarcia rejestracji"
 
     date = models.DateField(verbose_name="Data")
-    time_from = models.TimeField(verbose_name="Czas pozpoczęcia rejestracji")
+    time_from = models.TimeField(verbose_name="Czas rozpoczęcia rejestracji")
     time_to = models.TimeField(verbose_name="Czas zakończenia rejestracji")
 
     def __str__(self):
