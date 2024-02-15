@@ -17,7 +17,6 @@ from service.mixins.get_model_fields import get_model_fields
 from service.get_model_object import get_model_object
 from service.mixins.csv_serializer_mixin import CsvSerializerMixin
 from service.mixins.csv_writer import CsvWriter
-from service.mixins.pdf_writer import PdfWriter
 from service.mixins.get_request_data import RequestObjectDataMixin
 from service.mixins.add_header_mixin import HeaderMixin
 

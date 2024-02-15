@@ -1,13 +1,13 @@
 from django.db import models
+from datetime import datetime
 
 
 class OpenRegistration(models.Model):
     class Meta:
         verbose_name_plural = "Otwarcia rejestracji"
 
-    date = models.DateField(verbose_name="Data")
-    time_from = models.TimeField(verbose_name="Czas rozpoczęcia rejestracji")
-    time_to = models.TimeField(verbose_name="Czas zakończenia rejestracji")
+    date_from = models.DateField(default=datetime.now().day, verbose_name="Dzień rozpoczęcia rejestracji")
+    date_to = models.DateField(default=datetime.now().day, verbose_name="Dzień zakończenia rejestracji")
 
     def __str__(self):
-        return f"{self.date}"
+        return f"{self.date_from}"
