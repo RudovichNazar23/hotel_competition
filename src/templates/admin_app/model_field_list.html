@@ -8,10 +8,7 @@
         <form method="POST" class="d-flex flex-column m-1 p-5 align-items-center" enctype="multipart/form-data">{% csrf_token %}
             <div class="d-flex flex-column" style="width: 500px;">
                 <div class="d-flex flex-column border border-dark rounded p-3 mt-2">
-                    <div class="container d-flex flex-row p-2 justify-content-between">
-                        <button class="btn btn-light" type="submit" name="create_pdf_file"  formaction="{% url 'create_pdf_file' %}" formmethod="POST">
-                            Eksportować do pdf pliku
-                        </button>
+                    <div class="container d-flex flex-row p-2 justify-content-center">
                         <button class="btn btn-light" type="submit" name="create_csv_file" formaction="{% url 'create_csv_file' %}" formmethod="POST">
                             Eksportować do csv pliku
                         </button>

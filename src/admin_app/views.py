@@ -1,4 +1,3 @@
-from django.template.loader import render_to_string
 from django.http import HttpResponse
 
 from django.views.generic.list import ListView
@@ -31,26 +30,6 @@ class ModelsFieldListView(LoginRequiredMixin, ListView):
         **get_model_fields(model=TeamMember, context_name="team_member_fields"),
     }
     queryset = []
-
-
-class CreatePdfFileView(LoginRequiredMixin, View, CsvSerializerMixin, RequestObjectDataMixin):
-    def post(self, request):
-        response = HttpResponse(content_type="application/pdf")
-        response["Content-Disposition"] = "attachment; filename=test.pdf"
-        response["Content-Transfer-Encoding"] = "binary"
-
-        headers = self.get_form_request_values()
-        fields = self.get_form_request_keys()
-
-        data = self.create_data_rows(queryset_object=get_filtered_model_queryset(model=SchoolTeam, is_active=True),
-                                     fields=fields)
-
-        html_string = render_to_string(template_name="admin_app/pdf_output.html", context={"headers": headers, "data": data})
-
-        pdf_writer = PdfWriter(html_string=html_string, response_object=response)
-        pdf_writer.write_data()
-
-        return response
 
 
 class CreateCsvFileView(LoginRequiredMixin, View, CsvSerializerMixin, RequestObjectDataMixin, HeaderMixin):
