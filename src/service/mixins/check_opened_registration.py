@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 from ..get_model_object import get_model_object
-from datetime import date, datetime
+from datetime import date
 
 from admin_app.models import OpenRegistration
 
@@ -18,19 +18,12 @@ class CheckOpenedRegistrationMixin:
         return super().dispatch(request, *args, **kwargs)
 
     @staticmethod
-    def get_current_time():
-        return datetime.now().time()
-
-    @staticmethod
     def get_current_date():
         return date.today()
 
     def registration_is_active(self):
         current_date = self.get_current_date()
-        current_time = self.get_current_time()
 
-        model_object = get_model_object(model=OpenRegistration, date=current_date)
+        model_object = get_model_object(model=OpenRegistration, date_from__lte=current_date, date_to__gte=current_date)
 
-        if not model_object or not model_object.time_from <= current_time <= model_object.time_to:
-            return False
-        return True
+        return True if model_object else False
