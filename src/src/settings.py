@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'test_app',
     'phonenumber_field',
     'captcha',
+    'durationwidget',
 ]
 
 MIDDLEWARE = [
