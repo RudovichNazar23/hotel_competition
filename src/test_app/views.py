@@ -13,8 +13,13 @@ class CreateTestView(LoginRequiredMixin, View):
     def get(self, request):
         return render(request=request, template_name="test_app/create_test.html", context={
             "create_test_form": self.create_test_form,
-            "create_question_form": self.create_question_form
+            "create_question_form": self.create_question_form,
         })
+
+    def post(self, request):
+        print("POST request")
+        print(request)
+        return redirect("/")
 
 
 class CreateQuestionFormObject(LoginRequiredMixin, View):
