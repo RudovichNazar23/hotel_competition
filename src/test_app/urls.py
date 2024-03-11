@@ -1,7 +1,6 @@
 from django.urls import path
-from .views import CreateTestView, CreateQuestionFormObject
+from .views import TestLoginView
 
 urlpatterns = [
-    path("create_test", CreateTestView.as_view(), name="create_test"),
-    path("create_question_form", CreateQuestionFormObject.as_view(), name="create_question_form"),
+    path("test_login_page/<uidb64>/<token>", TestLoginView.as_view(), name="test_login"),
 ]

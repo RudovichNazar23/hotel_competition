@@ -108,7 +108,10 @@ class SuccessPageView(TemplateView):
     template_name = "registration_app/success_page.html"
 
 
-class ActivateSchoolTeamView(View):
+class ActivateSchoolTeamView(View, SendMailToClientMixin):
+    email_subject = "Test login page link"
+    email_template_name = "registration_app/test_login_page_link.html"
+
     def get(self, request, uidb64, token):
         try:
             uid = force_str(urlsafe_base64_decode(uidb64))
@@ -121,6 +124,7 @@ class ActivateSchoolTeamView(View):
         if school_team is not None and account_activation_token.check_token(school_team, token):
             school_team.is_active = True
             school_team.save()
+            self.send_activation_link(school_team, school_team.high_school.school_email)
             return render(request, "registration_app/success_team_activation.html", {"administrators": administrators})
         else:
             return render(request, "registration_app/error_team_activation.html", {"administrators": administrators})

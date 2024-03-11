@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+    <div class="d-flex flex-row align-items-center justify-content-center m-auto p-0"
+    >
+            <div class="d-flex flex-column align-items-center justify-content-center m-0">
+                <img src="{% static 'pictures/login_image.jpg' %}"
+                     style="width: 1200px; height: 927px;"
+                >
+            </div>
+             <form class="container d-flex flex-column align-items-center">
+                 {% for field in login_form %}
+                    <div class="">
+                        <strong>{{ field.label_tag }}</strong>
+                        {{ field }}
+                    </div>
+                {% endfor %}
+                 <div class="container d-flex flex-colum align-items-center justify-content-center p-3">
+                     <button class="btn btn-success">
+                        Zalogować się
+                    </button>
+                 </div>
+             </form>
+    </div>
+{% endblock %}

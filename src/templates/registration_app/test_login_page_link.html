@@ -1,0 +1,7 @@
+{% autoescape off %}
+Dzień dobry !
+
+Link do testu
+
+{{ protocol }}://{{ domain }}{% url 'test_login' uidb64=uid token=token %}
+{% endautoescape %}

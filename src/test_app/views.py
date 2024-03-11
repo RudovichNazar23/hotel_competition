@@ -1,32 +1,19 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse
 
 from django.views.generic.base import View
 
-from .forms import CreateTestForm, CreateQuestionForm
+from .forms import TestLoginForm
+
+from service.mixins.activate_school_mixin import ActivateSchoolMixin
 
 
-class CreateTestView(LoginRequiredMixin, View):
-    create_test_form = CreateTestForm()
-    create_question_form = CreateQuestionForm()
+class TestLoginView(ActivateSchoolMixin, View):
+    template_name = "test_app/test_login.html"
+    error_template_name = "test_app/error_test_login.html"
+    context = {
+        "login_form": TestLoginForm()
+    }
 
-    def get(self, request):
-        return render(request=request, template_name="test_app/create_test.html", context={
-            "create_test_form": self.create_test_form,
-            "create_question_form": self.create_question_form,
-        })
-
-    def post(self, request):
-        print("POST request")
-        print(request)
-        return redirect("/")
-
-
-class CreateQuestionFormObject(LoginRequiredMixin, View):
-    form = CreateQuestionForm()
-
-    def get(self, request):
-        return render(request=request,
-                      template_name="components/create_question_form.html",
-                      context={"create_question_form": self.form}
-                      )
+    def post(self, request, *args, **kwargs):
+        pass
