@@ -1,3 +1,4 @@
+from django.http import Http404
 from django.shortcuts import render
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
@@ -8,7 +9,6 @@ from service.tokens import account_activation_token
 
 
 class ActivateSchoolMixin:
-    template_name = None
     error_template_name = None
     context = {}
     error_context = {}
@@ -21,6 +21,7 @@ class ActivateSchoolMixin:
             school_team = None
 
         if school_team is not None and account_activation_token.check_token(school_team, token):
-            return render(request=request, template_name=self.template_name, context=self.context)
+            self.context["school_team"] = school_team
+            return super().dispatch(request, uidb64, token)
         else:
-            return render(request=request, template_name=self.error_template_name, context=self.error_context)
+            return render(request=request, template_name="error_link.html", context={self.error_context})

@@ -17,6 +17,7 @@ from service.mixins.create_object_or_get_none import CreateObjectOrGetNoneMixin
 from service.mixins.check_opened_registration import CheckOpenedRegistrationMixin
 
 from service.create_model_object import create_model_object
+from service.get_closest_test import get_closest_test_by_opening_date
 from service.send_email_to_client import SendMailToClientMixin
 from service.tokens import account_activation_token
 
@@ -124,7 +125,10 @@ class ActivateSchoolTeamView(View, SendMailToClientMixin):
         if school_team is not None and account_activation_token.check_token(school_team, token):
             school_team.is_active = True
             school_team.save()
-            self.send_activation_link(school_team, school_team.high_school.school_email)
+            self.send_activation_link(school_team,
+                                      school_team.high_school.school_email,
+                                      {"test_info": get_closest_test_by_opening_date()}
+                                      )
             return render(request, "registration_app/success_team_activation.html", {"administrators": administrators})
         else:
             return render(request, "registration_app/error_team_activation.html", {"administrators": administrators})
