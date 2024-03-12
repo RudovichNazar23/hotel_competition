@@ -1,7 +1,8 @@
 {% autoescape off %}
 Dzień dobry !
 
-Link do testu
+Test będzie dostępny w dniu {{ test_info.test_opening_date }}.
+Do testu można będzie się zalogować w godzinach od {{ test_info.test_start_login_time }} do {{ test_info.test_end_login_time }}
 
 {{ protocol }}://{{ domain }}{% url 'test_login' uidb64=uid token=token %}
 {% endautoescape %}
