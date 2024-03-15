@@ -2,7 +2,7 @@
 Dzień dobry !
 
 Test będzie dostępny w dniu {{ test_info.test_opening_date }}.
-Do testu można będzie się zalogować w godzinach od {{ test_info.test_start_login_time }} do {{ test_info.test_end_login_time }}
+Do testu można będzie zalogować się w godzinach od {{ test_info.test_start_login_time }} do {{ test_info.test_end_login_time }}
 
-{{ protocol }}://{{ domain }}{% url 'test_login' uidb64=uid token=token %}
+{{ protocol }}://{{ domain }}{% url 'test_login' uidb64=uidb64 %}
 {% endautoescape %}

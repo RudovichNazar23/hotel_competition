@@ -125,10 +125,8 @@ class ActivateSchoolTeamView(View, SendMailToClientMixin):
         if school_team is not None and account_activation_token.check_token(school_team, token):
             school_team.is_active = True
             school_team.save()
-            self.send_activation_link(school_team,
-                                      school_team.high_school.school_email,
-                                      {"test_info": get_closest_test_by_opening_date()}
-                                      )
+            self.send_activation_link(school_team, school_team.high_school.school_email, {"test_info": get_closest_test_by_opening_date(),
+                                                                                          "uidb64": uidb64})
             return render(request, "registration_app/success_team_activation.html", {"administrators": administrators})
         else:
             return render(request, "registration_app/error_team_activation.html", {"administrators": administrators})
