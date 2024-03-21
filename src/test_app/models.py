@@ -17,6 +17,8 @@ class Category(models.Model):
 
 
 class Test(models.Model):
+    TIME_FORMAT_HELP_TEXT = "Czas musi być zapisany w formacie HH:MM:SS"
+
     class Meta:
         verbose_name_plural = "Testy"
 
@@ -30,10 +32,14 @@ class Test(models.Model):
                                      related_name="test_creator",
                                      verbose_name="Osoba tworząca test"
                                      )
-    test_duration = models.DurationField(default="00:00", verbose_name="Czas trwania testu")
+    test_duration = models.DurationField(default="00:00:00",
+                                         verbose_name="Czas trwania testu",
+                                         help_text=TIME_FORMAT_HELP_TEXT)
     test_opening_date = models.DateField(verbose_name="Dzień otwarcia testu")
-    test_start_login_time = models.TimeField(verbose_name="Godzina rozpoczęcia logowania do testu")
-    test_end_login_time = models.TimeField(verbose_name="Godzina zakończenia logowania do testu")
+    test_start_login_time = models.TimeField(verbose_name="Godzina rozpoczęcia logowania do testu",
+                                             help_text=TIME_FORMAT_HELP_TEXT)
+    test_end_login_time = models.TimeField(verbose_name="Godzina zakończenia logowania do testu",
+                                           help_text=TIME_FORMAT_HELP_TEXT)
 
     def __str__(self):
         return f"{self.test_title}"
