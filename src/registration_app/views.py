@@ -68,7 +68,7 @@ class CreateSchoolTeamView(View, GetFormDataOrNoneMixin, CreateModelObjectMixin,
     high_school_form = CreateHighSchoolForm()
     guardian_form = CreateGuardianForm()
     team_member_form = CreateTeamMemberForm()
-    mail_subject = "Test email"
+    mail_subject = "Link do potwierdzenia rejestracji"
     email_template_name = "registration_app/email_activation.html"
 
     def post(self, request):
@@ -110,7 +110,7 @@ class SuccessPageView(TemplateView):
 
 
 class ActivateSchoolTeamView(View, SendMailToClientMixin):
-    email_subject = "Test login page link"
+    mail_subject = "Link do testu"
     email_template_name = "registration_app/test_login_page_link.html"
 
     def get(self, request, uidb64, token):
