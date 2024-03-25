@@ -55,6 +55,9 @@ class Question(models.Model):
                                            verbose_name="Załącznik dla pytania"
                                            )
 
+    def get_answers(self):
+        return self.answer_set.all()
+
     def __str__(self):
         return f"{self.question_content}"
 
@@ -79,5 +82,3 @@ class Competition(models.Model):
 
     def __str__(self):
         return f"{self.competition_test} - {self.competition_test_performer}"
-
-

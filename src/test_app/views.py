@@ -1,10 +1,9 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.utils.encoding import force_str
-from django.utils.http import urlsafe_base64_decode
 
 from django.views.generic.base import View
 
+from .models import Test, Question
 from .forms import TestLoginForm
 
 from django.utils.http import urlsafe_base64_encode
@@ -13,12 +12,13 @@ from django.utils.encoding import force_bytes
 from service.get_closest_test import get_closest_test_by_opening_date
 from service.authenticate_team_member import authenticate_team_member
 from service.get_model_object_by_uidb import get_model_object_by_uidb
+from service.get_model_object import get_model_object
+from service.get_filtered_model_queryset import get_filtered_model_queryset
 
 from service.mixins.check_opened_test import CheckOpenedTestMixin
 from service.mixins.authorize_team_member_mixin import AuthorizeTeamMemberMixin
 
 from registration_app.models import SchoolTeam
-
 from registration_app.models import TeamMember
 
 
@@ -62,4 +62,9 @@ class TestDetailView(AuthorizeTeamMemberMixin, View):
     authorize_team_member_model = TeamMember
 
     def get(self, request, member_uidb64, test_title):
-        return render(request=request, template_name="test_app/test_detail.html")
+        test = get_model_object(model=Test, test_title=test_title)
+        test_questions = get_filtered_model_queryset(model=Question, test=test)
+        return render(request=request, template_name="test_app/test_detail.html", context={
+            "test": test,
+            "test_questions": test_questions
+        })
