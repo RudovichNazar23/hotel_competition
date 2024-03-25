@@ -51,6 +51,9 @@ class Question(models.Model):
 
     test = models.ForeignKey(to=Test, on_delete=models.CASCADE, verbose_name="Test")
     question_content = models.TextField(verbose_name="Treść pytania")
+    question_attachment = models.FileField(upload_to="question_attachments/", blank=True,
+                                           verbose_name="Załącznik dla pytania"
+                                           )
 
     def __str__(self):
         return f"{self.question_content}"
