@@ -1,5 +1,40 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    Test result
+    <div class="p-4 d-flex flex-row justify-content-center align-items-center"
+         style="background-color: whitesmoke;"
+    >
+        <h4>
+            Wyniki testu dla ucznia {{ competition.competition_test_performer }}
+        </h4>
+    </div>
+    <div class="container m-auto d-flex flex-column align-items-center " style="width: 280px;">
+        <div class="container d-flex flex-row justify-content-between mt-3 border rounded border-dark"
+        >
+            <div class="m-1 p-1">
+                <strong>Nazwa testu</strong>
+            </div>
+            <div class="m-1 p-1">
+                {{ competition.competition_test }}
+            </div>
+        </div>
+        <div class="container d-flex flex-row justify-content-between mt-3 border rounded border-dark"
+        >
+            <div class="m-1 p-1">
+                <strong>Wynik</strong>
+            </div>
+            <div class="m-1 p-1">
+                {{ competition.competition_test_result }}
+            </div>
+        </div>
+        <div class="container d-flex flex-row justify-content-between mt-3 border rounded border-dark"
+        >
+            <div class="m-1 p-1">
+                <strong>Czas wykonania</strong>
+            </div>
+            <div class="m-1 p-1">
+                {{ competition.competition_test_performer_duration_time }}
+            </div>
+        </div>
+    </div>
 {% endblock %}

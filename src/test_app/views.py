@@ -87,11 +87,12 @@ class TestDetailView(AuthorizeTeamMemberMixin, View, RequestObjectDataMixin):
                                                  competition_test_result=competition_test_result,
                                                  competition_test_performer_duration_time="01:00:00"
                                                  )
-        return redirect("competition_result")
+        return redirect(reverse(viewname="competition_result", kwargs={"pk": competition_object.pk}))
 
 
 class CompetitionResultDetailView(View):
     template_name = "test_app/competition_result.html"
 
-    def get(self, request):
-        return render(request=request, template_name=self.template_name, context={})
+    def get(self, request, pk):
+        competition_result = get_model_object(model=Competition, pk=pk)
+        return render(request=request, template_name=self.template_name, context={"competition": competition_result})
