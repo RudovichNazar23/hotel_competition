@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load random_order %}
 
 {% block content %}
     <div class="d-flex flex-column align-items-between" style="background-color: whitesmoke; width: 100%; height: 150px;">
@@ -25,7 +26,7 @@
                                 <h5 class="card-title">{{ question.question_content }}</h5>
                                 <strong>Odpowiedzi</strong>
                                 <div class="d-flex flex-column">
-                                    {% for answer in question.answer_set.all %}
+                                    {% for answer in question.answer_set.all|order_by:"?" %}
                                         <div class="p-1">
                                             <input type="radio" class="m-1" name="{{ question.question_content }}" value="{{ answer.answer_content }}">
                                             {{ answer.answer_content }}
