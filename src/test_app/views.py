@@ -24,6 +24,8 @@ from service.mixins.get_request_data import RequestObjectDataMixin
 from registration_app.models import SchoolTeam
 from registration_app.models import TeamMember
 
+from random import shuffle
+
 
 class TestLoginView(CheckOpenedTestMixin, View):
     template_name = "test_app/test_login.html"
@@ -67,7 +69,7 @@ class TestDetailView(AuthorizeTeamMemberMixin, View, RequestObjectDataMixin):
 
     def get(self, request, member_uidb64, test_title):
         test = get_model_object(model=Test, test_title=test_title)
-        test_questions = get_filtered_model_queryset(model=Question, test=test)
+        test_questions = get_filtered_model_queryset(model=Question, test=test).order_by("?")
         return render(request=request, template_name="test_app/test_detail.html", context={
             "test": test,
             "test_questions": test_questions,
