@@ -75,10 +75,13 @@ class Answer(models.Model):
 
 
 class Competition(models.Model):
-    competition_test = models.ForeignKey(to=Test, on_delete=models.CASCADE)
-    competition_test_performer = models.ForeignKey(to=TeamMember, on_delete=models.CASCADE)
-    competition_test_result = models.CharField()
-    competition_test_performer_duration_time = models.DurationField(default="00:00")
+    class Meta:
+        verbose_name_plural = "Wyniki"
+
+    competition_test = models.ForeignKey(to=Test, on_delete=models.CASCADE, verbose_name="Nazwa testu")
+    competition_test_performer = models.ForeignKey(to=TeamMember, on_delete=models.CASCADE, verbose_name="Osoba zdająca test")
+    competition_test_result = models.CharField(verbose_name="Wynik")
+    competition_test_performer_duration_time = models.DurationField(default="00:00:00", verbose_name="Czas wykonania")
 
     def __str__(self):
         return f"{self.competition_test} - {self.competition_test_performer}"
