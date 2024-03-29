@@ -6,11 +6,17 @@
     <div class="d-flex flex-column align-items-between" style="background-color: whitesmoke; width: 100%; height: 150px;">
         <div class="d-flex flex-row">
              <h5 class="m-1 p-1">Czas trwania testu</h5>
-            <strong class="m-1 p-1">{{ test.test_duration }}</strong>
+            <strong class="m-1 p-1" id="test_duration">{{ test.test_duration }}</strong>
         </div>
         <div class="d-flex flex-row">
             <h5 class="m-1 p-1">Zostało się</h5>
-            <strong class="m-1 p-1">1:29:00</strong>
+            <strong class="m-1 p-1" id="time_remains">
+                <span id="hours"></span>
+                :
+                <span id="minutes"></span>
+                :
+                <span id="seconds"></span>
+            </strong>
         </div>
     </div>
     <form action="{% url 'test_detail' request.session.member_uidb64 test.test_title %}" method="POST">{% csrf_token %}
@@ -44,4 +50,8 @@
             </div>
         </div>
     </form>
+    <script>
+        const testDuration = "{{ test.test_duration }}";
+    </script>
+    <script src="{% static 'js/TestTimer.js' %}"></script>
 {% endblock %}
