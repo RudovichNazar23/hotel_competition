@@ -16,6 +16,7 @@ from service.get_model_object import get_model_object
 from service.get_filtered_model_queryset import get_filtered_model_queryset
 from service.create_model_object import create_model_object
 from service.count_test_result import count_test_result
+from service.count_performer_time import count_performer_time
 
 from service.mixins.check_opened_test import CheckOpenedTestMixin
 from service.mixins.authorize_team_member_mixin import AuthorizeTeamMemberMixin
@@ -23,8 +24,6 @@ from service.mixins.get_request_data import RequestObjectDataMixin
 
 from registration_app.models import SchoolTeam
 from registration_app.models import TeamMember
-
-from random import shuffle
 
 
 class TestLoginView(CheckOpenedTestMixin, View):
@@ -79,7 +78,11 @@ class TestDetailView(AuthorizeTeamMemberMixin, View, RequestObjectDataMixin):
         team_member = get_model_object_by_uidb(model=TeamMember, uidb64=member_uidb64)
         test = get_model_object(model=Test, test_title=test_title)
 
-        answers = [get_model_object(model=Answer, answer_content=i) for i in self.get_form_request_values()]
+        answers = [*filter(lambda x: x, [get_model_object(model=Answer, answer_content=i) for i in self.get_form_request_values()])]
+        performer_duration_time = count_performer_time(
+            test_duration=test.test_duration,
+            performer_duration=request.POST.get("competition_test_performer_duration_time")
+        )
 
         competition_test_result = count_test_result(answers=answers)
 
@@ -87,7 +90,7 @@ class TestDetailView(AuthorizeTeamMemberMixin, View, RequestObjectDataMixin):
                                                  competition_test=test,
                                                  competition_test_performer=team_member,
                                                  competition_test_result=competition_test_result,
-                                                 competition_test_performer_duration_time="01:00:00"
+                                                 competition_test_performer_duration_time=performer_duration_time
                                                  )
         return redirect(reverse(viewname="competition_result", kwargs={"pk": competition_object.pk}))
 
