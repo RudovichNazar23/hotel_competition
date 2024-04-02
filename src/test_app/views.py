@@ -79,12 +79,13 @@ class TestDetailView(AuthorizeTeamMemberMixin, View, RequestObjectDataMixin):
         test = get_model_object(model=Test, test_title=test_title)
 
         answers = [*filter(lambda x: x, [get_model_object(model=Answer, answer_content=i) for i in self.get_form_request_values()])]
+
         performer_duration_time = count_performer_time(
             test_duration=test.test_duration,
             performer_duration=request.POST.get("competition_test_performer_duration_time")
         )
 
-        competition_test_result = count_test_result(answers=answers)
+        competition_test_result = count_test_result(user_answers=answers, test_questions=test.question_set.all())
 
         competition_object = create_model_object(model=Competition,
                                                  competition_test=test,
