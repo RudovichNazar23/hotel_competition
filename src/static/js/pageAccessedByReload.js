@@ -8,9 +8,3 @@ const pageAccessedByReload = (
 if(pageAccessedByReload){
     document.getElementById("submit_button").click();
 };
-
-// document.onvisibilitychange = () => {
-//     if(document.visibilityState === "hidden"){
-//         console.log("Page was hidden");
-//     };
-// };
