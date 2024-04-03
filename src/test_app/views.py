@@ -82,7 +82,7 @@ class TestDetailView(AuthorizeTeamMemberMixin, View, RequestObjectDataMixin):
 
         performer_duration_time = count_performer_time(
             test_duration=test.test_duration,
-            performer_duration=request.POST.get("competition_test_performer_duration_time")
+            performer_duration=request.POST.get("competition_test_performer_duration_time") or 0
         )
 
         competition_test_result = count_test_result(user_answers=answers, test_questions=test.question_set.all())

@@ -24,7 +24,6 @@
     <form action="{% url 'test_detail' request.session.member_uidb64 test.test_title %}" method="POST">{% csrf_token %}
         <input type="hidden"
                name="competition_test_performer_duration_time"
-               value="00:00:00"
                id="performer_time"
         >
         <div class="container m-auto d-flex flex-column align-items-center">
@@ -61,4 +60,5 @@
         const testDuration = "{{ test.test_duration }}";
     </script>
     <script src="{% static 'js/TestTimer.js' %}"></script>
+    <script src="{% static 'js/pageAccessedByReload.js' %}"></script>
 {% endblock %}
