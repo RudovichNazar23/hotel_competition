@@ -40,7 +40,7 @@
                                 <div class="d-flex flex-column">
                                     {% for answer in question.answer_set.all|order_by:"?" %}
                                         <div class="p-1">
-                                            <input type="radio" class="m-1" name="{{ question.question_content }}" value="{{ answer.answer_content }}">
+                                            <input type="radio" class="m-1" name="{{ question.question_content }}" value="{{ answer.answer_content }}" id="{{ answer.answer_content }}">
                                             {{ answer.answer_content }}
                                         </div>
                                     {% endfor %}
@@ -60,6 +60,7 @@
         const testDuration = "{{ test.test_duration }}";
     </script>
     <script src="{% static 'js/TestTimer.js' %}"></script>
-    <script src="{% static 'js/pageAccessedByReload.js' %}"></script>
     <script src="{% static 'js/checkPageIsHidden.js' %}"></script>
+    <script src="{% static 'js/addAnswerToLocalStorage.js' %}"></script>
+    <script src="{% static 'js/pageAccessedByReload.js' %}"></script>
 {% endblock %}
