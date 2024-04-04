@@ -6,5 +6,10 @@ const pageAccessedByReload = (
         .includes('reload')
 );
 if(pageAccessedByReload){
-    alert("Web page was reloaded");
+    const userAnswers = JSON.parse(localStorage.getItem("answers"));
+    
+    for(let userAnswer of userAnswers){
+        const answerInputObject = document.getElementById(userAnswer.answerContent);
+        answerInputObject.checked = true;
+    };
 };

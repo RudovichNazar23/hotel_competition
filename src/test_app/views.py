@@ -68,7 +68,6 @@ class TestDetailView(AuthorizeTeamMemberMixin, View, RequestObjectDataMixin):
     authorize_team_member_model = TeamMember
 
     def get(self, request, member_uidb64, test_title):
-        print(request.POST or None)
         test = get_model_object(model=Test, test_title=test_title)
         test_questions = get_filtered_model_queryset(model=Question, test=test).order_by("?")
         return render(request=request, template_name="test_app/test_detail.html", context={
