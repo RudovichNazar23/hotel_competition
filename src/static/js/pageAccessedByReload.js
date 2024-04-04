@@ -6,5 +6,5 @@ const pageAccessedByReload = (
         .includes('reload')
 );
 if(pageAccessedByReload){
-    document.getElementById("submit_button").click();
+    alert("Web page was reloaded");
 };

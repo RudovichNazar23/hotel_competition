@@ -18,6 +18,12 @@ let timeInSeconds =
   Number(splittedTime[1]) * 60 +
   Number(splittedTime[2]);
 
+if(!localStorage.getItem("timeinSecondsRemains")){
+  localStorage.setItem("timeinSecondsRemains", timeInSeconds)
+};
+
+timeInSeconds = Number(localStorage.getItem("timeinSecondsRemains"));
+
 setInterval(updateTimeRemains, 1000);
 
 function validTimeFormat(timeValue) {
@@ -38,6 +44,6 @@ function updateTimeRemains() {
     seconds.innerText = validTimeFormat(secondsRemains);
 
     performer_time.value = `${timeInSeconds}`;
-    timeInSeconds--;
+    localStorage.setItem("timeinSecondsRemains", timeInSeconds--);
   };
 }
