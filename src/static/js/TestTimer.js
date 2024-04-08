@@ -32,6 +32,7 @@ function validTimeFormat(timeValue) {
 
 function updateTimeRemains() {
   if(timeInSeconds < 0){
+    localStorage.clear();
     submitButton.click();
   }
   else{
