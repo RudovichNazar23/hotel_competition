@@ -1,4 +1,3 @@
-from tkinter import NO
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
@@ -54,6 +53,16 @@ class TestLoginView(CheckOpenedTestMixin, View):
             team_member = authenticate_team_member(school_team_object=school_team, name=member_name,
                                                    surname=member_surname)
             if team_member:
+                team_member_competition = get_model_object(model=Competition,
+                                                           competition_test=test,
+                                                           competition_test_performer=team_member
+                                                           )
+
+                if team_member_competition:
+                    return render(request=request, template_name="test_app/error_test_login.html",
+                                  context={"Error": "Ten test był już wykonany przez aktualnego użytkownika"}
+                                  )
+
                 pk = urlsafe_base64_encode(force_bytes(team_member.pk))
                 request.session["member_uidb64"] = pk
                 return redirect(reverse("test_detail", kwargs={"member_uidb64": pk, "test_title": test}))
@@ -79,7 +88,18 @@ class TestDetailView(AuthorizeTeamMemberMixin, View, RequestObjectDataMixin):
         team_member = get_model_object_by_uidb(model=TeamMember, uidb64=member_uidb64)
         test = get_model_object(model=Test, test_title=test_title)
 
-        answers = [*filter(lambda x: x, [get_model_object(model=Answer, answer_content=i) for i in self.get_form_request_values()])]
+        team_member_competition = get_model_object(model=Competition,
+                                                   competition_test=test,
+                                                   competition_test_performer=team_member
+                                                   )
+
+        if team_member_competition:
+            return render(request=request, template_name="test_app/error_test_login.html",
+                          context={"Error": "Ten test był już wykonany przez aktualnego użytkownika"}
+                          )
+
+        answers = [*filter(lambda x: x,
+                           [get_model_object(model=Answer, answer_content=i) for i in self.get_form_request_values()])]
 
         performer_duration_time = count_performer_time(
             test_duration=test.test_duration,
