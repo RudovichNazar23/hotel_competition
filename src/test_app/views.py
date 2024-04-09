@@ -6,8 +6,8 @@ from django.views.generic.base import View
 from .models import Test, Question, Competition, Answer
 from .forms import TestLoginForm
 
-from django.utils.http import urlsafe_base64_encode
-from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
 
 from service.get_closest_test import get_closest_test_by_opening_date
 from service.authenticate_team_member import authenticate_team_member
@@ -25,6 +25,8 @@ from service.mixins.get_request_data import RequestObjectDataMixin
 from registration_app.models import SchoolTeam
 from registration_app.models import TeamMember
 
+from service.tokens import account_activation_token
+
 
 class TestLoginView(CheckOpenedTestMixin, View):
     template_name = "test_app/test_login.html"
@@ -32,16 +34,22 @@ class TestLoginView(CheckOpenedTestMixin, View):
         "form": TestLoginForm()
     }
 
-    def get(self, request, uidb64):
-        school_team = get_model_object_by_uidb(model=SchoolTeam, uidb64=uidb64)
-        if not school_team:
-            return render(request=request, template_name="test_app/error_test_login_page.html", context={})
+    def get(self, request, uidb64, token):
+        try:
+            uid = force_str(urlsafe_base64_decode(uidb64))
+            school_team = SchoolTeam.objects.get(pk=uid)
+        except:
+            school_team = None
 
-        self.context["uidb64"] = uidb64
-        self.context["school_team"] = school_team
-        return render(request=request, template_name=self.template_name, context=self.context)
+        if school_team is not None and account_activation_token.check_token(school_team, token):
+            self.context["uidb64"] = uidb64
+            self.context["school_team"] = school_team
+            self.context["token"] = token
+            return render(request=request, template_name=self.template_name, context=self.context)
 
-    def post(self, request, uidb64):
+        return render(request=request, template_name="test_app/error_test_login_page.html", context={})
+
+    def post(self, request, uidb64, token):
         school_team = get_model_object_by_uidb(model=SchoolTeam, uidb64=uidb64)
         test = get_closest_test_by_opening_date()
         form = TestLoginForm(request.POST)

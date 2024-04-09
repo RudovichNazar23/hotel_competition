@@ -11,7 +11,7 @@
                 >
             </div>
              <form class="container d-flex flex-column align-items-center"
-                   action="{% url 'test_login' uidb64 %}"
+                   action="{% url 'test_login' uidb64 token %}"
                    method="POST"
              >{% csrf_token %}
                  {% if error_message %}
