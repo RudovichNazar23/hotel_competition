@@ -3,7 +3,7 @@ from django.urls import reverse
 
 from django.views.generic.base import View
 
-from .models import Test, Question, Competition, Answer
+from .models import Test, Question, Competition, Answer, TeamMemberTestSession
 from .forms import TestLoginForm
 
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -17,6 +17,7 @@ from service.get_filtered_model_queryset import get_filtered_model_queryset
 from service.create_model_object import create_model_object
 from service.count_test_result import count_test_result
 from service.count_performer_time import count_performer_time
+from service.auth.login_team_member import login_team_member
 
 from service.mixins.check_opened_test import CheckOpenedTestMixin
 from service.mixins.authorize_team_member_mixin import AuthorizeTeamMemberMixin
@@ -71,9 +72,9 @@ class TestLoginView(CheckOpenedTestMixin, View):
                                   context={"Error": "Ten test był już wykonany przez aktualnego użytkownika"}
                                   )
 
-                pk = urlsafe_base64_encode(force_bytes(team_member.pk))
-                request.session["member_uidb64"] = pk
-                return redirect(reverse("test_detail", kwargs={"member_uidb64": pk, "test_title": test}))
+                login_team_member(request=request, team_member=team_member, session_model=TeamMemberTestSession)
+
+                return redirect(reverse("test_detail", kwargs={"member_uidb64": request.session["member_uidb64"], "test_title": test}))
         return render(request=request, template_name=self.template_name, context={
             "error_message": "Imię albo nazwisko nie jest zgodne ",
             "uidb64": uidb64,
@@ -122,12 +123,12 @@ class TestDetailView(AuthorizeTeamMemberMixin, View, RequestObjectDataMixin):
                                                  competition_test_result=competition_test_result,
                                                  competition_test_performer_duration_time=performer_duration_time
                                                  )
-        return redirect(reverse(viewname="competition_result", kwargs={"pk": competition_object.pk}))
+        return redirect(reverse(viewname="competition_result", kwargs={"pk": competition_object.pk, "member_uidb64": member_uidb64}))
 
 
 class CompetitionResultDetailView(View):
     template_name = "test_app/competition_result.html"
 
-    def get(self, request, pk):
+    def get(self, request, pk, member_uidb64):
         competition_result = get_model_object(model=Competition, pk=pk)
         return render(request=request, template_name=self.template_name, context={"competition": competition_result})

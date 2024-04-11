@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.admin import TabularInline, ModelAdmin
-from .models import Category, Test, Question, Answer, Competition
+from .models import Category, Test, Question, Answer, Competition, TeamMemberTestSession
 
 
 class AnswerInline(TabularInline):
@@ -20,4 +20,5 @@ admin.site.register(Test)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Answer)
 admin.site.register(Competition)
+admin.site.register(TeamMemberTestSession)
 
