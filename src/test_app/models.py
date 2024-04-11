@@ -85,3 +85,10 @@ class Competition(models.Model):
 
     def __str__(self):
         return f"{self.competition_test} - {self.competition_test_performer}"
+
+
+class TeamMemberTestSession(models.Model):
+    team_member = models.ForeignKey(to=TeamMember, related_name="logged_in_team_member", on_delete=models.CASCADE)
+    member_uidb64 = models.CharField()
+    team_member_client = models.CharField()
+
