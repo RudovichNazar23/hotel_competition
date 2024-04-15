@@ -3,11 +3,11 @@ from django.urls import reverse
 
 from django.views.generic.base import View
 
-from .models import Test, Question, Competition, Answer, TeamMemberTestSession
+from .models import Test, Question, Competition, Answer
 from .forms import TestLoginForm
 
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes, force_str
+from django.utils.http import urlsafe_base64_decode
+from django.utils.encoding import force_str
 
 from service.get_closest_test import get_closest_test_by_opening_date
 from service.authenticate_team_member import authenticate_team_member
@@ -18,10 +18,14 @@ from service.create_model_object import create_model_object
 from service.count_test_result import count_test_result
 from service.count_performer_time import count_performer_time
 from service.auth.login_team_member import login_team_member
+from service.auth.logout_team_member import logout_team_member
 
 from service.mixins.check_opened_test import CheckOpenedTestMixin
 from service.mixins.authorize_team_member_mixin import AuthorizeTeamMemberMixin
 from service.mixins.get_request_data import RequestObjectDataMixin
+
+from service.mixins.competition_result_permissions_mixin import CompetitionResultPermissionsMixin
+
 
 from registration_app.models import SchoolTeam
 from registration_app.models import TeamMember
@@ -68,17 +72,21 @@ class TestLoginView(CheckOpenedTestMixin, View):
                                                            )
 
                 if team_member_competition:
-                    return render(request=request, template_name="test_app/error_test_login.html",
-                                  context={"Error": "Ten test był już wykonany przez aktualnego użytkownika"}
-                                  )
+                    return render(request=request, template_name=self.template_name, context={
+                        "error_message": "Ten test był już wykonany przez aktualnego użytkownika",
+                        "uidb64": uidb64,
+                        "form": form,
+                        "token": token
+                    })
 
-                login_team_member(request=request, team_member=team_member, session_model=TeamMemberTestSession)
+                login_team_member(request=request, team_member=team_member)
 
                 return redirect(reverse("test_detail", kwargs={"member_uidb64": request.session["member_uidb64"], "test_title": test}))
         return render(request=request, template_name=self.template_name, context={
             "error_message": "Imię albo nazwisko nie jest zgodne ",
             "uidb64": uidb64,
-            "form": form
+            "form": form,
+            "token": token
         })
 
 
@@ -123,10 +131,12 @@ class TestDetailView(AuthorizeTeamMemberMixin, View, RequestObjectDataMixin):
                                                  competition_test_result=competition_test_result,
                                                  competition_test_performer_duration_time=performer_duration_time
                                                  )
+        logout_team_member(request=request)
         return redirect(reverse(viewname="competition_result", kwargs={"pk": competition_object.pk, "member_uidb64": member_uidb64}))
 
 
-class CompetitionResultDetailView(View):
+class CompetitionResultDetailView(AuthorizeTeamMemberMixin, CompetitionResultPermissionsMixin ,View):
+    authorize_team_member_model = TeamMember
     template_name = "test_app/competition_result.html"
 
     def get(self, request, pk, member_uidb64):
