@@ -18,6 +18,7 @@ class TeamMemberAdmin(ModelAdmin):
 
 class SchoolTeamAdmin(ModelAdmin):
     list_display = ("high_school", "guardian", "first_member", "second_member", "is_active")
+    list_filter = ("is_active",)
 
 
 admin.site.register(HighSchool, HighSchoolAdmin)

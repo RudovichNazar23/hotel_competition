@@ -17,10 +17,12 @@ class QuestionAdmin(ModelAdmin):
 
 class TestAdmin(ModelAdmin):
     list_display = ("test_title", "test_category", "test_creator", "test_duration", "test_opening_date", "test_start_login_time", "test_end_login_time")
+    list_filter = ("test_category", "test_opening_date")
 
 
 class CompetitionAdmin(ModelAdmin):
     list_display = ("competition_test", "competition_test_performer", "competition_test_result", "competition_test_performer_duration_time")
+    list_filter = ("competition_test_result", "competition_test_performer_duration_time")
 
 
 admin.site.register(Category)
