@@ -135,7 +135,7 @@ class TestDetailView(AuthorizeTeamMemberMixin, View, RequestObjectDataMixin):
         return redirect(reverse(viewname="competition_result", kwargs={"pk": competition_object.pk, "member_uidb64": member_uidb64}))
 
 
-class CompetitionResultDetailView(AuthorizeTeamMemberMixin, CompetitionResultPermissionsMixin ,View):
+class CompetitionResultDetailView(AuthorizeTeamMemberMixin, CompetitionResultPermissionsMixin, View):
     authorize_team_member_model = TeamMember
     template_name = "test_app/competition_result.html"
 
