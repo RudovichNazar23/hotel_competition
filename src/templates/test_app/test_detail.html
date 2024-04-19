@@ -26,6 +26,10 @@
                name="competition_test_performer_duration_time"
                id="performer_time"
         >
+        <input type="hidden"
+               name="suspicious_actions"
+               id="suspicious_actions"
+        >
         <div class="container m-auto d-flex flex-column align-items-center">
             {% for question in test_questions %}
                     <div class="card mt-3" style="width: 500px;">
@@ -60,8 +64,9 @@
         const testDuration = "{{ test.test_duration }}";
     </script>
     <script src="{% static 'js/TestTimer.js' %}"></script>
-    <script src="{% static 'js/checkPageIsHidden.js' %}"></script>
     <script src="{% static 'js/addAnswerToLocalStorage.js' %}"></script>
+    <script src="{% static 'js/suspiciousActionsLoader.js' %}"></script>
     <script src="{% static 'js/pageAccessedByReload.js' %}"></script>
+    <script src="{% static 'js/checkPageIsHidden.js' %}"></script>
     <script src="{% static 'js/clearLocalStorage.js' %}"></script>
 {% endblock %}

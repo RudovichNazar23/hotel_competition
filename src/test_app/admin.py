@@ -21,8 +21,8 @@ class TestAdmin(ModelAdmin):
 
 
 class CompetitionAdmin(ModelAdmin):
-    list_display = ("competition_test", "competition_test_performer", "competition_test_result", "competition_test_performer_duration_time")
-    list_filter = ("competition_test_result", "competition_test_performer_duration_time")
+    list_display = ("competition_test", "competition_test_performer", "competition_test_result", "competition_test_performer_duration_time", "suspicious_actions")
+    list_filter = ("competition_test_result", "competition_test_performer_duration_time", "suspicious_actions")
 
 
 admin.site.register(Category)
