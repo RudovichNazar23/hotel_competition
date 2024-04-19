@@ -82,6 +82,7 @@ class Competition(models.Model):
     competition_test_performer = models.ForeignKey(to=TeamMember, on_delete=models.CASCADE, verbose_name="Osoba zdająca test")
     competition_test_result = models.CharField(verbose_name="Wynik")
     competition_test_performer_duration_time = models.DurationField(default="00:00:00", verbose_name="Czas wykonania")
+    suspicious_actions = models.IntegerField(verbose_name="Podejrzane działania", default=0)
 
     def __str__(self):
         return f"{self.competition_test} - {self.competition_test_performer}"

@@ -124,12 +124,14 @@ class TestDetailView(AuthorizeTeamMemberMixin, View, RequestObjectDataMixin):
         )
 
         competition_test_result = count_test_result(user_answers=answers, test_questions=test.question_set.all())
+        suspicious_actions = int(request.POST.get("suspicious_actions")) - 1
 
         competition_object = create_model_object(model=Competition,
                                                  competition_test=test,
                                                  competition_test_performer=team_member,
                                                  competition_test_result=competition_test_result,
-                                                 competition_test_performer_duration_time=performer_duration_time
+                                                 competition_test_performer_duration_time=performer_duration_time,
+                                                 suspicious_actions=suspicious_actions
                                                  )
         logout_team_member(request=request)
         return redirect(reverse(viewname="competition_result", kwargs={"pk": competition_object.pk, "member_uidb64": member_uidb64}))

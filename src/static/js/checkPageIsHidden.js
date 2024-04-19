@@ -1,5 +1,7 @@
-//document.onvisibilitychange = () => {
-//    if(document.visibilityState === "hidden"){
-//        alert("Current tab was hidden!!!");
-//    };
-//};
+document.onvisibilitychange = () => {
+    if(document.visibilityState === "hidden"){
+        let suspiciousActionsAmount = parseSuspiciousActions();
+        suspiciousActionsAmount += 1;
+        setSuspiciousActions(suspiciousActionsAmount);
+    };
+};
