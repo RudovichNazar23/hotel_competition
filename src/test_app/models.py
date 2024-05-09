@@ -80,7 +80,7 @@ class Competition(models.Model):
 
     competition_test = models.ForeignKey(to=Test, on_delete=models.CASCADE, verbose_name="Nazwa testu")
     competition_test_performer = models.ForeignKey(to=TeamMember, on_delete=models.CASCADE, verbose_name="Osoba zdająca test")
-    competition_test_result = models.CharField(verbose_name="Wynik")
+    competition_test_result = models.CharField(verbose_name="Wynik", max_length=25)
     competition_test_performer_duration_time = models.DurationField(default="00:00:00", verbose_name="Czas wykonania")
     suspicious_actions = models.IntegerField(verbose_name="Podejrzane działania", default=0)
 
@@ -90,6 +90,6 @@ class Competition(models.Model):
 
 class TeamMemberTestSession(models.Model):
     team_member = models.ForeignKey(to=TeamMember, related_name="logged_in_team_member", on_delete=models.CASCADE)
-    member_uidb64 = models.CharField()
-    team_member_client = models.CharField()
+    member_uidb64 = models.CharField(max_length=255)
+    team_member_client = models.CharField(max_length=1000)
 
